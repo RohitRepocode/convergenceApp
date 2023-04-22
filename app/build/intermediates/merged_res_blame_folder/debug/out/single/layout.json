@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_verify_mpin.xml",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\fragment_verify_mpin.xml"
+    },
+    {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\dialog_bank_details.xml",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\dialog_bank_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_change_language.xml",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\fragment_change_language.xml"
+    },
+    {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_home.xml",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_set_mpin.xml",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\fragment_set_mpin.xml"
+    }
+]
