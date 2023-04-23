@@ -55,6 +55,7 @@ font manrope_regular
 font manrope_semi_bold
 font montserrat_regular
 id Local_LanguageTv
+id action_homeFragment_self
 id action_homeFragment_to_changeLanguageFragment
 id action_homeFragment_to_loginFragment
 id action_loginFragment_to_homeFragment
@@ -71,6 +72,7 @@ id btn_verify
 id changLanguage_Rv
 id changeLanguage
 id changeLanguageFragment
+id dialog_rv
 id edt_mobile
 id english_languageTv
 id et_password
@@ -85,6 +87,7 @@ id l2
 id llBank
 id logOut
 id loginFragment
+id memberName
 id member_visi
 id mob_vis
 id mother_name
@@ -94,6 +97,7 @@ id nav_graph
 id ngp_visib
 id no_internet_dialoge
 id nrlm_vill_vissib
+id othermember
 id pinview_first
 id pinview_getMpin
 id pinview_second
@@ -132,6 +136,8 @@ layout activity_login
 layout activity_mpin
 layout activity_splash
 layout dialog_bank_details
+layout dialog_custom_layout
+layout dilog_layout
 layout fragment_change_language
 layout fragment_home
 layout fragment_login
@@ -176,6 +182,7 @@ string mobile_no
 string mother_name
 string no_internet_dialog
 string ok
+string other_member
 string password
 string reason
 string save

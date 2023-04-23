@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_changeLanguageFragment"
             app:destination="@id/changeLanguageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_self"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeLanguageFragment"

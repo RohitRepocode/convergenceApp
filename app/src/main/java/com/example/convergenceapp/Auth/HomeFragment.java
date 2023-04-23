@@ -1,7 +1,14 @@
 package com.example.convergenceapp.Auth;
 
+import static android.content.ContentValues.TAG;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,7 +21,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,25 +36,48 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.convergenceapp.Mpin.SetMpinFragmentDirections;
 import com.example.convergenceapp.R;
+import com.example.convergenceapp.adapter.DataDialogAdapter;
 import com.example.convergenceapp.database.AppDatabase;
 import com.example.convergenceapp.database.dbBean.BeneficiaryBean;
 import com.example.convergenceapp.database.dbBean.GpBean;
 import com.example.convergenceapp.database.dbBean.MemberBean;
 import com.example.convergenceapp.database.dbBean.NrlmDataBean;
 import com.example.convergenceapp.database.dbBean.NrlmVillageBean;
+import com.example.convergenceapp.database.dbBean.OtherMembersName;
 import com.example.convergenceapp.database.dbBean.ReasonBean;
 import com.example.convergenceapp.database.dbBean.ShgBean;
 import com.example.convergenceapp.database.dbBean.VillageBean;
+import com.example.convergenceapp.database.entity.LoginInfoEntity;
+import com.example.convergenceapp.database.entity.ReasonInfoEntity;
 import com.example.convergenceapp.databinding.DialogBankDetailsBinding;
 import com.example.convergenceapp.databinding.FragmentHomeBinding;
+import com.example.convergenceapp.request.BeneficiaryDetails;
+import com.example.convergenceapp.request.LoginRequest;
+import com.example.convergenceapp.request.SyncRequest;
+import com.example.convergenceapp.utils.AppUtils;
+import com.example.convergenceapp.utils.Cryptography;
 import com.example.convergenceapp.utils.DialogFactory;
+import com.example.convergenceapp.utils.NetworkFactory;
+import com.example.convergenceapp.vollyCall.VolleyResult;
+import com.example.convergenceapp.vollyCall.VolleyService;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.NoSuchPaddingException;
+
 public class HomeFragment extends Fragment {
+    public VolleyResult mResultCallBack = null;
+    List<OtherMembersName> otherMemberData;
     ArrayAdapter<String> selectionFromAdapter,selectionFromAdapter1,gpAdapter,nrlmGpAdapter,nrlmVillageAdapter,shgAdapter,memberAdapter,reasonAdapter,wiilingAdapter,villageAdapter,beneficiaryAdapter;
 Toolbar toolbar_home;
     List<String> list,list1,gpName,villageName,beneficiaryName,nrlmGpName,nrlmGpCode,nrlmVillageName,nrlmVillageCode,shgName,shgCode,memberName,memberCode,reasonList;
@@ -220,7 +253,7 @@ Toolbar toolbar_home;
             selectedVillage= villageName.get(i);
             //GET beneficiary NAME
 
-             beneficiaryBeans = appDatabase.pmaygInfoDao().getBenDetailsList(selectedVillage);
+             beneficiaryBeans = appDatabase.pmaygInfoDao().getBenDetailsList(selectedVillage,"0");
             beneficiaryName = new ArrayList<String>();
 
 
@@ -294,6 +327,8 @@ Toolbar toolbar_home;
             ifscCode=beneficiaryBeans.get(i).getIfsc_code();
             fatherName= beneficiaryBeans.get(i).getFatherName();
             motherName= beneficiaryBeans.get(i).getMotherName();
+
+             otherMemberData=appDatabase.pmaygInfoDao().getMemberData(beneficiaryId); //uper se niche le aana
 
             if(!beneficiaryMobileNo.equalsIgnoreCase("NA"))
             {
@@ -831,6 +866,28 @@ Toolbar toolbar_home;
                         beneficiaryBankName+beneficiaryBranchname+beneficiaryMobileNo+ifscCode+
                         selectedNrlmGpCode+selectedNrlmGp+selectedNrlmVillageCode+selectedNrlmVillage+selectedShg+selectedShgCode+
                         selectedmemberCode+selectedmember,Toast.LENGTH_LONG).show();
+                  AppUtils.getInstance().showLog("SelecltedGp "+selectedGp, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedVillage "+selectedVillage, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedBeneficiary "+selectedBeneficiary, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedWIlling "+selectedWIlling, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedBenAvailable "+selectedBenAvailable, HomeFragment.class);
+                  AppUtils.getInstance().showLog("beneficiaryAccNo "+beneficiaryAccNo, HomeFragment.class);
+                  AppUtils.getInstance().showLog("beneficiaryId "+beneficiaryId, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedReason "+selectedReason, HomeFragment.class);
+                  AppUtils.getInstance().showLog("beneficiaryBankName "+beneficiaryBankName, HomeFragment.class);
+                  AppUtils.getInstance().showLog("beneficiaryBranchname "+beneficiaryBranchname, HomeFragment.class);
+                  AppUtils.getInstance().showLog("beneficiaryMobileNo "+beneficiaryMobileNo, HomeFragment.class);
+                  AppUtils.getInstance().showLog("ifscCode "+ifscCode, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedNrlmGpCode "+selectedNrlmGpCode, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedNrlmVillageCode "+selectedNrlmVillageCode, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedShg "+selectedShg, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedShgCode "+selectedShgCode, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedNrlmGp "+selectedNrlmGp, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedmemberCode "+selectedmemberCode, HomeFragment.class);
+                  AppUtils.getInstance().showLog("selectedmember "+selectedmember, HomeFragment.class);
+
+                syncAPI("SKEDSKROHIT","d64af8bb2a57ae0e","samsung-a21s-SM-A217F","1232323","pmayg","" +
+                        "xyz","vf",selectedNrlmVillageCode,beneficiaryMobileNo,selectedBenAvailable,"Anita","no","Benefiacry expired","450","054","a","asdf","2023-04-18 17:58:33.667");
             }
         });
 
@@ -850,11 +907,20 @@ Toolbar toolbar_home;
         binding.llBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 showBankDialog();
+
+
             }
         });
 
-
+ binding.othermember.setOnClickListener(new View.OnClickListener() {
+     @Override
+     public void onClick(View v) {
+         showOtherMemberDialog();
+     }
+ });
 
 
 
@@ -1383,7 +1449,215 @@ Toolbar toolbar_home;
         });*/
 
     }
+public  void SyncApi(String userid,String imei, String device, String location, String scheme, String reg, String lgdgp, String lgdvill, String mobile, String beniavai,String familymem,String join, String rsn,String shgcd,String shgmemcod, String entity, String appvr,String cretedon ){
+    BeneficiaryDetails beneficiaryDetails=new BeneficiaryDetails();
 
+    beneficiaryDetails.setScheme_name(scheme);
+    beneficiaryDetails.setReg_no(reg);
+    beneficiaryDetails.setLgd_gp_cd(lgdgp);
+    beneficiaryDetails.setLgd_vill_cd(lgdvill);
+    beneficiaryDetails.setMobile_no(mobile);
+    beneficiaryDetails.setBenif_avail(beniavai);
+    beneficiaryDetails.setFamily_mem_shg(familymem);
+    beneficiaryDetails.setJoin_shg(join);
+    beneficiaryDetails.setReason(rsn);
+    beneficiaryDetails.setShg_code(shgcd);
+    beneficiaryDetails.setShg_member_code(shgmemcod);
+    beneficiaryDetails.setEntity_code(entity);
+    beneficiaryDetails.setApp_ver(appvr);
+    beneficiaryDetails.setCreated_on_app(cretedon);
+    ArrayList<BeneficiaryDetails> Bendata = new ArrayList<>();
+    Bendata.add(beneficiaryDetails);
+
+
+    SyncRequest syncRequest =new SyncRequest();
+    syncRequest.setUser_id(userid);
+    syncRequest.setImei_no(imei);
+    syncRequest.setDevice_name(device);
+    syncRequest.setLocation_coordinate(location);
+    syncRequest.setBenficiary_dtl(Bendata);
+    String data = new Gson().toJson(syncRequest);
+    AppUtils.getInstance().showLog("Actual Data-----"+data, HomeFragment.class);
+
+}
+   public void syncAPI(String userid,String imei, String device, String location, String scheme, String reg, String lgdgp, String lgdvill, String mobile, String beniavai,String familymem,String join, String rsn,String shgcd,String shgmemcod, String entity, String appvr,String cretedon )
+    {
+        if(NetworkFactory.isInternetOn(getContext()))
+        {
+
+            ProgressDialog   progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+
+            //*******make json object is encrypted and *********//*
+            JSONObject encryptedObject =new JSONObject();
+            JSONObject plainData=null;
+            try {
+                Cryptography cryptography = new Cryptography();
+
+
+
+
+                @SuppressLint("HardwareIds") String  imeiNo = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+                BeneficiaryDetails beneficiaryDetails=new BeneficiaryDetails();
+
+                beneficiaryDetails.setScheme_name(scheme);
+                beneficiaryDetails.setReg_no(reg);
+                beneficiaryDetails.setLgd_gp_cd(lgdgp);
+                beneficiaryDetails.setLgd_vill_cd(lgdvill);
+                beneficiaryDetails.setMobile_no(mobile);
+                beneficiaryDetails.setBenif_avail(beniavai);
+                beneficiaryDetails.setFamily_mem_shg(familymem);
+                beneficiaryDetails.setJoin_shg(join);
+                beneficiaryDetails.setReason(rsn);
+                beneficiaryDetails.setShg_code(shgcd);
+                beneficiaryDetails.setShg_member_code(shgmemcod);
+                beneficiaryDetails.setEntity_code(entity);
+                beneficiaryDetails.setApp_ver(appvr);
+                beneficiaryDetails.setCreated_on_app(cretedon);
+                ArrayList<BeneficiaryDetails> Bendata = new ArrayList<>();
+                Bendata.add(beneficiaryDetails);
+
+
+                SyncRequest syncRequest =new SyncRequest();
+                syncRequest.setUser_id(userid);
+                syncRequest.setImei_no(imeiNo);
+                syncRequest.setDevice_name(device);
+                syncRequest.setLocation_coordinate(location);
+                syncRequest.setBenficiary_dtl(Bendata);
+
+
+
+                // String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyLoginid(),getCurrentContext());
+
+
+
+
+
+
+                String data=new Gson().toJson(syncRequest);
+                plainData=new JSONObject(data);
+                //encryptedObject.accumulate("data",cryptography.encrypt(new Gson().toJson(nrlmMasterRequest)));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } //catch (InvalidKeyException e) {
+            // e.printStackTrace();
+            // } catch (InvalidAlgorithmParameterException e) {
+            //  e.printStackTrace();
+            //} catch (IllegalBlockSizeException e) {
+            // e.printStackTrace();
+            // } catch (BadPaddingException e) {
+            //e.printStackTrace();
+            // } catch (UnsupportedEncodingException e) {
+            // e.printStackTrace();
+            //}
+            //***********************************************//*
+
+            // AppUtils.getInstance().showLog("request of NrlmMaster" +encryptedObject, LoginFragment.class);
+            Log.d(TAG, "request of Sync "+plainData.toString());
+            NavController  navController = NavHostFragment.findNavController(this);
+            NavDirections navDirections=HomeFragmentDirections.actionHomeFragmentSelf();
+
+
+            mResultCallBack = new VolleyResult() {
+                @Override
+                public void notifySuccess(String requestType, JSONObject response) {
+
+
+                    try {
+                        if(response.getString("message").equalsIgnoreCase("success"))
+                        {
+
+                            appDatabase.pmaygInfoDao().updateSyncFlag(beneficiaryId);
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(),"Synced successfully",Toast.LENGTH_LONG).show();
+                            AppUtils.getInstance().showLog("Synced", HomeFragment.class);
+                            navController.navigate(navDirections);
+
+                        }
+
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            try {
+                                Cryptography cryptography = new Cryptography();
+                                //jsonObject = new JSONObject(cryptography.decrypt(objectResponse)); //Manish comment
+                                //if (jsonObject.getString("E200").equalsIgnoreCase("Success"))
+                                // AppUtils.getInstance().showLog("responseJSON" + jsonObject.toString(), LoginFragment.class);
+                                JSONObject viewData=response;
+                                Log.d(TAG, "responseJSON: "+viewData.toString());
+
+
+
+
+                                // nrlmMasterResponse.getData();
+
+
+
+
+                            } catch (Exception e) {
+                                //progressDialog.dismiss();
+                                Log.d(TAG, "notifySuccess: "+e);
+                                //AppUtils.getInstance().showLog("DecryptEx" + e, LoginFragment.class);
+                            }
+
+                            // progressDialog.dismiss();
+                            // intentToMpin();
+                            //callNrlmMasterAPI();
+                          //  callPmaygMasterAPI();
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+//progressDialog.dismiss();
+                }
+
+                @Override
+                public void notifyError(String requestType, VolleyError error) {
+                    //      progressDialog.dismiss();
+
+                }
+            };
+            VolleyService volleyService = VolleyService.getInstance(getContext());
+
+            //  volleyService.postDataVolley("dashboardRequest", "http://10.197.183.105:8080/nrlmwebservice/services/convergence/assigndata", encryptedObject, mResultCallBack);
+            volleyService.postDataVolley("Request of sync", "https://nrlm.gov.in/nrlmwebservice/services/convergence/syncdata", plainData, mResultCallBack);
+
+
+
+        }else {
+            //progressDialog.dismiss();
+            //Log.d(TAG, "Internet: ");*//*
+
+        }
+    }
+private void showOtherMemberDialog()
+{
+    Dialog dialog = new Dialog(getContext());
+    //   dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.parseColor()));
+    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    dialog.setContentView(R.layout.dilog_layout);
+    dialog.setCanceledOnTouchOutside(true);
+    dialog.setCancelable(true);
+
+    dialog.show();
+
+
+    RecyclerView rvTest = (RecyclerView) dialog.findViewById(R.id.dialog_rv);
+    rvTest.setHasFixedSize(true);
+    rvTest.setLayoutManager(new LinearLayoutManager(getContext()));
+    //rvTest.addItemDecoration(new SimpleDividerItemDecoration(context, R.drawable.divider));
+    DataDialogAdapter rvAdapter = new DataDialogAdapter(getContext(), otherMemberData);
+    rvTest.setAdapter(rvAdapter);
+}
     private void showBankDialog(){
         final Dialog dialog = new Dialog(getContext());
         DialogBankDetailsBinding bankDialogBinding=DialogBankDetailsBinding.inflate(getLayoutInflater());
@@ -1409,6 +1683,10 @@ Toolbar toolbar_home;
     }
     public void logout(){
         navController = NavHostFragment.findNavController(this);
+        appDatabase.pmaygInfoDao().deleteAll();
+        appDatabase.nrlmInfoDao().deleteAll();
+        appDatabase.loginInfoDao().deleteAll();
+        appDatabase.reasonInfoDao().deleteAll();
 
         NavDirections navDirections= HomeFragmentDirections.actionHomeFragmentToLoginFragment();
         navController.navigate(navDirections);

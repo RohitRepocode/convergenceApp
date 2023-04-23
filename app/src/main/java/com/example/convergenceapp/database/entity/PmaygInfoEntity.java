@@ -7,7 +7,18 @@ import androidx.room.PrimaryKey;
 public class PmaygInfoEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
     private String gp_code;
+
+    private String flag;
 
     public int getId() {
         return id;
@@ -202,7 +213,7 @@ public class PmaygInfoEntity {
         this.ifsc_code = ifsc_code;
     }
 
-    public PmaygInfoEntity(String gp_code, String gp_name, String village_code, String village_name, String scheme, String beneficiary_holder_name, String beneficiary_id, String beneficiary_acc_no, String beneficiary_bank_name, String beneficiary_branch_name, String mobile_no, String member_name, String holder_sync_flag, String mothername, String districtname, String blockcode, String districtcode, String statecode, String fathername, String blockname, String sl_no_member, String ifsc_code) {
+    public PmaygInfoEntity(String gp_code, String gp_name, String village_code, String village_name, String scheme, String beneficiary_holder_name, String beneficiary_id, String beneficiary_acc_no, String beneficiary_bank_name, String beneficiary_branch_name, String mobile_no, String member_name, String holder_sync_flag, String mothername, String districtname, String blockcode, String districtcode, String statecode, String fathername, String blockname, String sl_no_member, String ifsc_code,String flag) {
 
         this.gp_code = gp_code;
         this.gp_name = gp_name;
@@ -226,6 +237,7 @@ public class PmaygInfoEntity {
         this.blockname = blockname;
         this.sl_no_member = sl_no_member;
         this.ifsc_code=ifsc_code;
+        this.flag=flag;
     }
 
     private String beneficiary_acc_no;

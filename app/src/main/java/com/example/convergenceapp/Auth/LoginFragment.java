@@ -74,6 +74,7 @@ public class LoginFragment extends Fragment {
     public String gp_name;
     public String village_code;
     public String village_name;
+    public String flag;
     public String ifsc_code;
     public String scheme;
     public String beneficiary_holder_name;
@@ -144,7 +145,7 @@ AppDatabase appDatabase;
                 else if (password.equalsIgnoreCase("")) {
                     loginPassEt.setError(getString(R.string.invalid_password));
                 }
-                else if (userId.equalsIgnoreCase("TABISH")&&  password.equalsIgnoreCase("jamal")) {
+                else if (userId.equalsIgnoreCase("SKEDSKROHIT")&&  password.equalsIgnoreCase("ROHIT123")) {
 
                     //Login Insert
 
@@ -380,11 +381,12 @@ AppDatabase appDatabase;
                                 blockname=pmaygMasterResponse.getData().getAssign_data().get(j).getBlockname();
                                 sl_no_member=pmaygMasterResponse.getData().getAssign_data().get(j).getSl_no_member();
                                 ifsc_code=pmaygMasterResponse.getData().getAssign_data().get(j).getIfsc_code();
+                                flag="0";
 
                                 appDatabase.pmaygInfoDao().insert(new PmaygInfoEntity(gp_code,gp_name,village_code
                                         ,village_name,scheme,beneficiary_holder_name,beneficiary_id
                                         ,beneficiary_acc_no,beneficiary_bank_name,beneficiary_branch_name,mobile_no,member_name,holder_sync_flag,mothername
-                                        ,districtname,blockcode,districtcode,statecode,fathername,blockname,sl_no_member,ifsc_code));
+                                        ,districtname,blockcode,districtcode,statecode,fathername,blockname,sl_no_member,ifsc_code,flag));
                                 String beneficiaryname= pmaygMasterResponse.getData().getAssign_data().get(j).getBeneficiaryname();
                                 Toast.makeText(getContext(),beneficiaryname,Toast.LENGTH_LONG).show();
 
@@ -661,11 +663,15 @@ AppDatabase appDatabase;
                 loginRequest.setImei_no("d64af8bb2a57ae0e");
                 loginRequest.setDevice_name("samsung-a21s-SM-A217F");
                 loginRequest.setApp_version("1.0.0");
-                loginRequest.setDate("2023-04-23");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    loginRequest.setDate(AppUtils.getInstance().getCurrentDate());
+                }
                 loginRequest.setAndroid_version("5.0.0");
                 loginRequest.setLocation_coordinate("1232323");
                 loginRequest.setAndroid_api_version("30");
-                loginRequest.setLogout_time("2023-04-22");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    loginRequest.setLogout_time(AppUtils.getInstance().getCurrentDateAndTime());
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     loginRequest.setApp_login_time(AppUtils.getInstance().getCurrentDateAndTime());

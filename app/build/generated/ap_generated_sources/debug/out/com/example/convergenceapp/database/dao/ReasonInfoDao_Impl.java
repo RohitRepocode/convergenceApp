@@ -4,6 +4,7 @@ import android.database.Cursor;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import com.example.convergenceapp.database.dbBean.ReasonBean;
@@ -21,6 +22,8 @@ public final class ReasonInfoDao_Impl implements ReasonInfoDao {
   private final RoomDatabase __db;
 
   private final EntityInsertionAdapter<ReasonInfoEntity> __insertionAdapterOfReasonInfoEntity;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
 
   public ReasonInfoDao_Impl(RoomDatabase __db) {
     this.__db = __db;
@@ -40,6 +43,13 @@ public final class ReasonInfoDao_Impl implements ReasonInfoDao {
         }
       }
     };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "delete from ReasonInfoEntity";
+        return _query;
+      }
+    };
   }
 
   @Override
@@ -51,6 +61,20 @@ public final class ReasonInfoDao_Impl implements ReasonInfoDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteAll() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+    __db.beginTransaction();
+    try {
+      _stmt.executeUpdateDelete();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfDeleteAll.release(_stmt);
     }
   }
 

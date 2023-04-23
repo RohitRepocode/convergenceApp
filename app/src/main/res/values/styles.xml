@@ -20,4 +20,6 @@
         <item name="android:windowEnterAnimation">@anim/dialog_style_up</item>
         <item name="android:windowExitAnimation">@anim/dialog_style_bottem</item>
     </style>
+
+
 </resources>

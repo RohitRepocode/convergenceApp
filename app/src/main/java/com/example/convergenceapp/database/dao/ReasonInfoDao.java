@@ -11,9 +11,13 @@ import com.example.convergenceapp.database.entity.ReasonInfoEntity;
 import java.util.List;
 @Dao
 public interface ReasonInfoDao {
+    @Query("delete from ReasonInfoEntity")
+    void deleteAll();
     @Insert
     void insert(ReasonInfoEntity reasonInfoEntity);
 @Query("select reason from ReasonInfoEntity")
 List<ReasonBean> getReason();
+
+  ;
 
 }

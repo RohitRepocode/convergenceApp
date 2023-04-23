@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\merged_res\\debug\\layout_dilog_layout.xml.flat",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\dilog_layout.xml"
+    },
+    {
         "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_mpin.xml.flat",
         "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\activity_mpin.xml"
     },
@@ -158,6 +162,10 @@
     {
         "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_arrow_forward_24.xml.flat",
         "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\drawable\\ic_baseline_arrow_forward_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\merged_res\\debug\\layout_dialog_custom_layout.xml.flat",
+        "source": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\src\\main\\res\\layout\\dialog_custom_layout.xml"
     },
     {
         "merged": "C:\\Users\\manis\\Downloads\\ConvergenceApp\\app\\build\\intermediates\\merged_res\\debug\\layout_dialog_bank_details.xml.flat",

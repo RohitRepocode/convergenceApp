@@ -48,5 +48,6 @@
     <string name="ok">ok</string>
     <string name="change_language">Change language</string>
     <string name="log_out">Log out</string>
+    <string name="other_member">Other members</string>
 
 </resources>

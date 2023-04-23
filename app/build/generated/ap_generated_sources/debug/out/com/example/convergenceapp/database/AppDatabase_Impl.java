@@ -53,11 +53,11 @@ public final class AppDatabase_Impl extends AppDatabase {
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `LoginInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `login_id` TEXT, `password` TEXT, `mobile_number` TEXT, `state_code` TEXT, `state_short_name` TEXT, `server_date_time` TEXT, `language_id` TEXT, `login_attempt` TEXT, `logout_days` TEXT, `user_name` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `NrlmInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_code` TEXT, `lgd_gp_code` TEXT, `gp_name` TEXT, `village_code` TEXT, `village_name` TEXT, `shg_name` TEXT, `shg_code` TEXT, `member_name` TEXT, `member_code` TEXT, `user_id` TEXT, `block_name` TEXT, `lgd_state_code` TEXT, `state_name` TEXT, `state_code` TEXT, `block_code` TEXT, `district_name` TEXT, `lgd_district_code` TEXT, `lgd_block_code` TEXT)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `PmaygInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_code` TEXT, `gp_name` TEXT, `village_code` TEXT, `village_name` TEXT, `scheme` TEXT, `beneficiary_holder_name` TEXT, `beneficiary_id` TEXT, `ifsc_code` TEXT, `beneficiary_acc_no` TEXT, `beneficiary_bank_name` TEXT, `beneficiary_branch_name` TEXT, `mobile_no` TEXT, `member_name` TEXT, `holder_sync_flag` TEXT, `mothername` TEXT, `districtname` TEXT, `blockcode` TEXT, `districtcode` TEXT, `statecode` TEXT, `fathername` TEXT, `blockname` TEXT, `sl_no_member` TEXT)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `PmaygInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_code` TEXT, `flag` TEXT, `gp_name` TEXT, `village_code` TEXT, `village_name` TEXT, `scheme` TEXT, `beneficiary_holder_name` TEXT, `beneficiary_id` TEXT, `ifsc_code` TEXT, `beneficiary_acc_no` TEXT, `beneficiary_bank_name` TEXT, `beneficiary_branch_name` TEXT, `mobile_no` TEXT, `member_name` TEXT, `holder_sync_flag` TEXT, `mothername` TEXT, `districtname` TEXT, `blockcode` TEXT, `districtcode` TEXT, `statecode` TEXT, `fathername` TEXT, `blockname` TEXT, `sl_no_member` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `ReasonInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `reason` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `MemberEntryInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_Name` TEXT, `scheme_Name` TEXT, `ben_Id` TEXT, `lgd_GpCode` TEXT, `lgd_Villagecode` TEXT, `mobile_no` TEXT, `ben_availability` TEXT, `any_Familyinshg` TEXT, `willing_joinshg` TEXT, `reason` TEXT, `shg_Code` TEXT, `member_Code` TEXT, `village_Code` TEXT, `created_on` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b527ec5850a8cd1820bdbe7f9267f763')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e8e52da11f48ee31c917a6c23181a01f')");
       }
 
       @Override
@@ -155,9 +155,10 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoNrlmInfoEntity + "\n"
                   + " Found:\n" + _existingNrlmInfoEntity);
         }
-        final HashMap<String, TableInfo.Column> _columnsPmaygInfoEntity = new HashMap<String, TableInfo.Column>(23);
+        final HashMap<String, TableInfo.Column> _columnsPmaygInfoEntity = new HashMap<String, TableInfo.Column>(24);
         _columnsPmaygInfoEntity.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPmaygInfoEntity.put("gp_code", new TableInfo.Column("gp_code", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPmaygInfoEntity.put("flag", new TableInfo.Column("flag", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPmaygInfoEntity.put("gp_name", new TableInfo.Column("gp_name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPmaygInfoEntity.put("village_code", new TableInfo.Column("village_code", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPmaygInfoEntity.put("village_name", new TableInfo.Column("village_name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -227,7 +228,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "b527ec5850a8cd1820bdbe7f9267f763", "04e67bc508af10acd189e2784c75b1bf");
+    }, "e8e52da11f48ee31c917a6c23181a01f", "35934e68feb41155d538721a0278924a");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

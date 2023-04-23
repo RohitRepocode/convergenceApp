@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 
 public class  AppUtils {
     public static AppUtils utilsInstance;
-
+    public static boolean wantToShow=true;
 
     public synchronized static AppUtils getInstance() {
         if (utilsInstance == null) {
@@ -193,6 +193,16 @@ public class  AppUtils {
         //AppUtils.getInstance().showLog("CurrentDtaeAndTime"+format,AppUtils.class);
         return format;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getCurrentDate() {
+       /* DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();*/
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String format = simpleDateFormat.format(new Date());
+        //AppUtils.getInstance().showLog("CurrentDtaeAndTime"+format,AppUtils.class);
+        return format;
+    }
     public void setLocale(@NonNull String localeName, @NonNull Resources res, Context context) {
 
         Locale myLocale = new Locale(localeName);
@@ -217,5 +227,9 @@ public class  AppUtils {
         }*/
     }
 
-
+    public  void showLog(String logMsg, Class application) {
+        if (wantToShow) {
+            Log.d(application.getName(), logMsg);
+        }
+    }
 }

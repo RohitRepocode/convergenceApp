@@ -9,6 +9,7 @@ import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import com.example.convergenceapp.database.dbBean.BeneficiaryBean;
 import com.example.convergenceapp.database.dbBean.GpBean;
+import com.example.convergenceapp.database.dbBean.OtherMembersName;
 import com.example.convergenceapp.database.dbBean.VillageBean;
 import com.example.convergenceapp.database.entity.PmaygInfoEntity;
 import java.lang.Class;
@@ -27,12 +28,14 @@ public final class PmaygInfoDao_Impl implements PmaygInfoDao {
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
 
+  private final SharedSQLiteStatement __preparedStmtOfUpdateSyncFlag;
+
   public PmaygInfoDao_Impl(RoomDatabase __db) {
     this.__db = __db;
     this.__insertionAdapterOfPmaygInfoEntity = new EntityInsertionAdapter<PmaygInfoEntity>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `PmaygInfoEntity` (`id`,`gp_code`,`gp_name`,`village_code`,`village_name`,`scheme`,`beneficiary_holder_name`,`beneficiary_id`,`ifsc_code`,`beneficiary_acc_no`,`beneficiary_bank_name`,`beneficiary_branch_name`,`mobile_no`,`member_name`,`holder_sync_flag`,`mothername`,`districtname`,`blockcode`,`districtcode`,`statecode`,`fathername`,`blockname`,`sl_no_member`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `PmaygInfoEntity` (`id`,`gp_code`,`flag`,`gp_name`,`village_code`,`village_name`,`scheme`,`beneficiary_holder_name`,`beneficiary_id`,`ifsc_code`,`beneficiary_acc_no`,`beneficiary_bank_name`,`beneficiary_branch_name`,`mobile_no`,`member_name`,`holder_sync_flag`,`mothername`,`districtname`,`blockcode`,`districtcode`,`statecode`,`fathername`,`blockname`,`sl_no_member`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -43,110 +46,115 @@ public final class PmaygInfoDao_Impl implements PmaygInfoDao {
         } else {
           stmt.bindString(2, value.getGp_code());
         }
-        if (value.getGp_name() == null) {
+        if (value.getFlag() == null) {
           stmt.bindNull(3);
         } else {
-          stmt.bindString(3, value.getGp_name());
+          stmt.bindString(3, value.getFlag());
         }
-        if (value.getVillage_code() == null) {
+        if (value.getGp_name() == null) {
           stmt.bindNull(4);
         } else {
-          stmt.bindString(4, value.getVillage_code());
+          stmt.bindString(4, value.getGp_name());
         }
-        if (value.getVillage_name() == null) {
+        if (value.getVillage_code() == null) {
           stmt.bindNull(5);
         } else {
-          stmt.bindString(5, value.getVillage_name());
+          stmt.bindString(5, value.getVillage_code());
         }
-        if (value.getScheme() == null) {
+        if (value.getVillage_name() == null) {
           stmt.bindNull(6);
         } else {
-          stmt.bindString(6, value.getScheme());
+          stmt.bindString(6, value.getVillage_name());
         }
-        if (value.getBeneficiary_holder_name() == null) {
+        if (value.getScheme() == null) {
           stmt.bindNull(7);
         } else {
-          stmt.bindString(7, value.getBeneficiary_holder_name());
+          stmt.bindString(7, value.getScheme());
         }
-        if (value.getBeneficiary_id() == null) {
+        if (value.getBeneficiary_holder_name() == null) {
           stmt.bindNull(8);
         } else {
-          stmt.bindString(8, value.getBeneficiary_id());
+          stmt.bindString(8, value.getBeneficiary_holder_name());
         }
-        if (value.getIfsc_code() == null) {
+        if (value.getBeneficiary_id() == null) {
           stmt.bindNull(9);
         } else {
-          stmt.bindString(9, value.getIfsc_code());
+          stmt.bindString(9, value.getBeneficiary_id());
         }
-        if (value.getBeneficiary_acc_no() == null) {
+        if (value.getIfsc_code() == null) {
           stmt.bindNull(10);
         } else {
-          stmt.bindString(10, value.getBeneficiary_acc_no());
+          stmt.bindString(10, value.getIfsc_code());
         }
-        if (value.getBeneficiary_bank_name() == null) {
+        if (value.getBeneficiary_acc_no() == null) {
           stmt.bindNull(11);
         } else {
-          stmt.bindString(11, value.getBeneficiary_bank_name());
+          stmt.bindString(11, value.getBeneficiary_acc_no());
         }
-        if (value.getBeneficiary_branch_name() == null) {
+        if (value.getBeneficiary_bank_name() == null) {
           stmt.bindNull(12);
         } else {
-          stmt.bindString(12, value.getBeneficiary_branch_name());
+          stmt.bindString(12, value.getBeneficiary_bank_name());
         }
-        if (value.getMobile_no() == null) {
+        if (value.getBeneficiary_branch_name() == null) {
           stmt.bindNull(13);
         } else {
-          stmt.bindString(13, value.getMobile_no());
+          stmt.bindString(13, value.getBeneficiary_branch_name());
         }
-        if (value.getMember_name() == null) {
+        if (value.getMobile_no() == null) {
           stmt.bindNull(14);
         } else {
-          stmt.bindString(14, value.getMember_name());
+          stmt.bindString(14, value.getMobile_no());
         }
-        if (value.getHolder_sync_flag() == null) {
+        if (value.getMember_name() == null) {
           stmt.bindNull(15);
         } else {
-          stmt.bindString(15, value.getHolder_sync_flag());
+          stmt.bindString(15, value.getMember_name());
         }
-        if (value.getMothername() == null) {
+        if (value.getHolder_sync_flag() == null) {
           stmt.bindNull(16);
         } else {
-          stmt.bindString(16, value.getMothername());
+          stmt.bindString(16, value.getHolder_sync_flag());
         }
-        if (value.getDistrictname() == null) {
+        if (value.getMothername() == null) {
           stmt.bindNull(17);
         } else {
-          stmt.bindString(17, value.getDistrictname());
+          stmt.bindString(17, value.getMothername());
         }
-        if (value.getBlockcode() == null) {
+        if (value.getDistrictname() == null) {
           stmt.bindNull(18);
         } else {
-          stmt.bindString(18, value.getBlockcode());
+          stmt.bindString(18, value.getDistrictname());
         }
-        if (value.getDistrictcode() == null) {
+        if (value.getBlockcode() == null) {
           stmt.bindNull(19);
         } else {
-          stmt.bindString(19, value.getDistrictcode());
+          stmt.bindString(19, value.getBlockcode());
         }
-        if (value.getStatecode() == null) {
+        if (value.getDistrictcode() == null) {
           stmt.bindNull(20);
         } else {
-          stmt.bindString(20, value.getStatecode());
+          stmt.bindString(20, value.getDistrictcode());
         }
-        if (value.getFathername() == null) {
+        if (value.getStatecode() == null) {
           stmt.bindNull(21);
         } else {
-          stmt.bindString(21, value.getFathername());
+          stmt.bindString(21, value.getStatecode());
         }
-        if (value.getBlockname() == null) {
+        if (value.getFathername() == null) {
           stmt.bindNull(22);
         } else {
-          stmt.bindString(22, value.getBlockname());
+          stmt.bindString(22, value.getFathername());
         }
-        if (value.getSl_no_member() == null) {
+        if (value.getBlockname() == null) {
           stmt.bindNull(23);
         } else {
-          stmt.bindString(23, value.getSl_no_member());
+          stmt.bindString(23, value.getBlockname());
+        }
+        if (value.getSl_no_member() == null) {
+          stmt.bindNull(24);
+        } else {
+          stmt.bindString(24, value.getSl_no_member());
         }
       }
     };
@@ -154,6 +162,13 @@ public final class PmaygInfoDao_Impl implements PmaygInfoDao {
       @Override
       public String createQuery() {
         final String _query = "delete from PmaygInfoEntity";
+        return _query;
+      }
+    };
+    this.__preparedStmtOfUpdateSyncFlag = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "update PmaygInfoEntity set flag='1' where beneficiary_id=?";
         return _query;
       }
     };
@@ -182,6 +197,26 @@ public final class PmaygInfoDao_Impl implements PmaygInfoDao {
     } finally {
       __db.endTransaction();
       __preparedStmtOfDeleteAll.release(_stmt);
+    }
+  }
+
+  @Override
+  public void updateSyncFlag(final String beneficiaryId) {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfUpdateSyncFlag.acquire();
+    int _argIndex = 1;
+    if (beneficiaryId == null) {
+      _stmt.bindNull(_argIndex);
+    } else {
+      _stmt.bindString(_argIndex, beneficiaryId);
+    }
+    __db.beginTransaction();
+    try {
+      _stmt.executeUpdateDelete();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfUpdateSyncFlag.release(_stmt);
     }
   }
 
@@ -264,14 +299,20 @@ public final class PmaygInfoDao_Impl implements PmaygInfoDao {
   }
 
   @Override
-  public List<BeneficiaryBean> getBenDetailsList(final String villageCode) {
-    final String _sql = "select distinct fathername,mothername,beneficiary_id,beneficiary_holder_name,beneficiary_acc_no,beneficiary_bank_name,beneficiary_branch_name,mobile_no,ifsc_code from PmaygInfoEntity where village_name=?";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+  public List<BeneficiaryBean> getBenDetailsList(final String villageCode, final String flag) {
+    final String _sql = "select distinct fathername,mothername,beneficiary_id,beneficiary_holder_name,beneficiary_acc_no,beneficiary_bank_name,beneficiary_branch_name,mobile_no,ifsc_code from PmaygInfoEntity where village_name=? and flag=?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
     int _argIndex = 1;
     if (villageCode == null) {
       _statement.bindNull(_argIndex);
     } else {
       _statement.bindString(_argIndex, villageCode);
+    }
+    _argIndex = 2;
+    if (flag == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, flag);
     }
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
@@ -352,6 +393,40 @@ public final class PmaygInfoDao_Impl implements PmaygInfoDao {
           _tmpIfsc_code = _cursor.getString(_cursorIndexOfIfscCode);
         }
         _item.setIfsc_code(_tmpIfsc_code);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
+  public List<OtherMembersName> getMemberData(final String beneficiaryId) {
+    final String _sql = "select distinct member_name from PmaygInfoEntity where beneficiary_id=?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (beneficiaryId == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, beneficiaryId);
+    }
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfMembersName = 0;
+      final List<OtherMembersName> _result = new ArrayList<OtherMembersName>(_cursor.getCount());
+      while(_cursor.moveToNext()) {
+        final OtherMembersName _item;
+        _item = new OtherMembersName();
+        final String _tmpMembersName;
+        if (_cursor.isNull(_cursorIndexOfMembersName)) {
+          _tmpMembersName = null;
+        } else {
+          _tmpMembersName = _cursor.getString(_cursorIndexOfMembersName);
+        }
+        _item.setMembersName(_tmpMembersName);
         _result.add(_item);
       }
       return _result;

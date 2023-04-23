@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 import com.example.convergenceapp.database.dbBean.BeneficiaryBean;
 import com.example.convergenceapp.database.dbBean.GpBean;
+import com.example.convergenceapp.database.dbBean.OtherMembersName;
 import com.example.convergenceapp.database.dbBean.VillageBean;
 import com.example.convergenceapp.database.entity.PmaygInfoEntity;
 
@@ -24,7 +25,13 @@ public interface PmaygInfoDao {
      List<GpBean> getGPList();
     @Query("select distinct village_code,village_name from PmaygInfoEntity where gp_name=:gpName")
     List<VillageBean> getVillageList(String gpName);
-    @Query("select distinct fathername,mothername,beneficiary_id,beneficiary_holder_name,beneficiary_acc_no,beneficiary_bank_name,beneficiary_branch_name,mobile_no,ifsc_code from PmaygInfoEntity where village_name=:villageCode")
-    List<BeneficiaryBean> getBenDetailsList(String villageCode);
+    @Query("select distinct fathername,mothername,beneficiary_id,beneficiary_holder_name,beneficiary_acc_no,beneficiary_bank_name,beneficiary_branch_name,mobile_no,ifsc_code from PmaygInfoEntity where village_name=:villageCode and flag=:flag")
+    List<BeneficiaryBean> getBenDetailsList(String villageCode, String flag);
+
+   @Query("select distinct member_name from PmaygInfoEntity where beneficiary_id=:beneficiaryId")
+    List<OtherMembersName> getMemberData(String beneficiaryId);
+
+   @Query("update PmaygInfoEntity set flag='1' where beneficiary_id=:beneficiaryId")
+    void updateSyncFlag(String beneficiaryId);
 
 }

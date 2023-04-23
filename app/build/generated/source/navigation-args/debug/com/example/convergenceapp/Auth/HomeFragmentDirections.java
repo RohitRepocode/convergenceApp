@@ -18,4 +18,9 @@ public class HomeFragmentDirections {
   public static NavDirections actionHomeFragmentToChangeLanguageFragment() {
     return new ActionOnlyNavDirections(R.id.action_homeFragment_to_changeLanguageFragment);
   }
+
+  @NonNull
+  public static NavDirections actionHomeFragmentSelf() {
+    return new ActionOnlyNavDirections(R.id.action_homeFragment_self);
+  }
 }

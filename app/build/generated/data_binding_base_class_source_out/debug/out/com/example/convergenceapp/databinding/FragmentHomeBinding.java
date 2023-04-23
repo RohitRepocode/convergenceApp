@@ -71,6 +71,9 @@ public abstract class FragmentHomeBinding extends ViewDataBinding {
   public final TextInputLayout nrlmVillVissib;
 
   @NonNull
+  public final LinearLayout othermember;
+
+  @NonNull
   public final TextInputLayout reasonVisi;
 
   @NonNull
@@ -130,14 +133,14 @@ public abstract class FragmentHomeBinding extends ViewDataBinding {
       EditText edtMobile, TextView fatherName, LinearLayout fathervis, LinearLayout llBank,
       TextInputLayout memberVisi, LinearLayout mobVis, TextView motherName,
       LinearLayout motherNamevis, TextInputLayout ngpVisib, TextInputLayout nrlmVillVissib,
-      TextInputLayout reasonVisi, TextInputLayout shgVisi, AutoCompleteTextView spinnerBenAvail,
-      AutoCompleteTextView spinnerBeneficiary, AutoCompleteTextView spinnerGp,
-      AutoCompleteTextView spinnerInShg, AutoCompleteTextView spinnerMemberName,
-      AutoCompleteTextView spinnerNrlmGp, AutoCompleteTextView spinnerNrlmVillage,
-      AutoCompleteTextView spinnerReason, AutoCompleteTextView spinnerScheme,
-      AutoCompleteTextView spinnerShgName, AutoCompleteTextView spinnerVillage,
-      AutoCompleteTextView spinnerWilling, TextView textView, Toolbar toolbar,
-      TextInputLayout villageVis, TextInputLayout willingVisib) {
+      LinearLayout othermember, TextInputLayout reasonVisi, TextInputLayout shgVisi,
+      AutoCompleteTextView spinnerBenAvail, AutoCompleteTextView spinnerBeneficiary,
+      AutoCompleteTextView spinnerGp, AutoCompleteTextView spinnerInShg,
+      AutoCompleteTextView spinnerMemberName, AutoCompleteTextView spinnerNrlmGp,
+      AutoCompleteTextView spinnerNrlmVillage, AutoCompleteTextView spinnerReason,
+      AutoCompleteTextView spinnerScheme, AutoCompleteTextView spinnerShgName,
+      AutoCompleteTextView spinnerVillage, AutoCompleteTextView spinnerWilling, TextView textView,
+      Toolbar toolbar, TextInputLayout villageVis, TextInputLayout willingVisib) {
     super(_bindingComponent, _root, _localFieldCount);
     this.anyFamilyVisib = anyFamilyVisib;
     this.backclick = backclick;
@@ -155,6 +158,7 @@ public abstract class FragmentHomeBinding extends ViewDataBinding {
     this.motherNamevis = motherNamevis;
     this.ngpVisib = ngpVisib;
     this.nrlmVillVissib = nrlmVillVissib;
+    this.othermember = othermember;
     this.reasonVisi = reasonVisi;
     this.shgVisi = shgVisi;
     this.spinnerBenAvail = spinnerBenAvail;
