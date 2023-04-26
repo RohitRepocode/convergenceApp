@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.service.autofill.UserData;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.example.convergenceapp.response.NrlmMasterResponse;
 import com.example.convergenceapp.response.PmaygMasterResponse;
 import com.example.convergenceapp.utils.AppUtils;
 import com.example.convergenceapp.utils.Cryptography;
+import com.example.convergenceapp.utils.DialogFactory;
 import com.example.convergenceapp.utils.NetworkFactory;
 import com.example.convergenceapp.utils.PreferenceFactory;
 import com.example.convergenceapp.utils.PreferenceKeyManager;
@@ -59,6 +61,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import retrofit2.http.GET;
+
 public class LoginFragment extends Fragment {
     public Button loginBtn;
     public TextInputEditText loginIdEt;
@@ -66,6 +70,9 @@ public class LoginFragment extends Fragment {
     public NavController navController;
     public VolleyResult mResultCallBack = null;
     ProgressDialog progressDialog;
+
+    @SuppressLint("HardwareIds")  String  imeiNo;
+    String deviceInfo;
     public String nrlmgp_code, nrlmlgd_gp_code, nrlmgp_name, nrlmvillage_code, nrlmvillage_name, nrlmshg_name, nrlmshg_code, nrlmmember_name
             , nrlmmember_code, nrlmuser_id, nrlmblock_name, nrlmlgd_state_code, nrlmstate_name, nrlmstate_code, nrlmblock_code,
             nrlmdistrict_name, nrlmlgd_district_code, nrlmlgd_block_code;
@@ -126,7 +133,7 @@ AppDatabase appDatabase;
         loginIdEt = (TextInputEditText) view.findViewById(R.id.et_userId);
         loginPassEt = (TextInputEditText) view.findViewById(R.id.et_password);
         navController = NavHostFragment.findNavController(this);
-        String mPin =   PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyMpin(), getContext());
+       // String mPin =   PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyMpin(), getContext());
 
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -138,84 +145,26 @@ AppDatabase appDatabase;
                 progressDialog.show();
 
                 String password = loginPassEt.getText().toString();
+                AppUtils.getInstance().showLog("Password"+password, LoginFragment.class);
                 String userId = loginIdEt.getText().toString().trim().toUpperCase().replaceAll("\\s","");
                 if (userId.equalsIgnoreCase("")) {
+                    progressDialog.dismiss();
                     loginIdEt.setError(getString(R.string.invalid_userid));
                 }
                 else if (password.equalsIgnoreCase("")) {
+                    progressDialog.dismiss();
                     loginPassEt.setError(getString(R.string.invalid_password));
                 }
-                else if (userId.equalsIgnoreCase("SKEDSKROHIT")&&  password.equalsIgnoreCase("ROHIT123")) {
-
-                    //Login Insert
-
-                    /*appDatabase.loginInfoDao().insert(new LoginInfoEntity("UPAGTABISH","123456","7763027544"
-                            ,"1234","Up","12/06/97","en"
-                            ,"1","5","tabish jamal"));*/      //comment Manish
-
-
-                   // appDatabase.reasonInfoDao().insert(new ReasonInfoEntity("Beneficiary Expired")); //Manish comment
-                   // appDatabase.reasonInfoDao().insert(new ReasonInfoEntity("Beneficiary migrated"));
-                    //appDatabase.reasonInfoDao().insert(new ReasonInfoEntity("Any Others"));
-
-                    Handler handler = new Handler();
-
-                  getLoginAPI();
-
-         /*           handler.postDelayed(new Runnable() {
-                        public void run() {
-
-
-                            getLoginAPI();
-
-
-                            // callPmaygMasterAPI();
-                            //callNrlmMasterAPI();
-                            //progressDialog.dismiss();
-                            //  intentToMpin();
-                        }
-                    }, 5000);
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-
-
-                           // callPmaygMasterAPI();
-                            //callNrlmMasterAPI();
-                          //  progressDialog.dismiss();
-                            //  intentToMpin();
-                        }
-                    }, 5000);
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-
-
-                            //callPmaygMasterAPI();
-                            callNrlmMasterAPI();
-                            //progressDialog.dismiss();
-                           // intentToMpin();
-                        }
-                    }, 5000);*/
-                    // callNrlmMasterAPI();
-                    //   callPmaygMasterAPI();
 
 
 
+                  getLoginAPI(userId,password);
 
-                    //intentToMpin();
+               // String password=loginPassEt.getText().toString();
+
+             // AppUtils.getInstance().showLog( "password"+ AppUtils.getInstance().getSha256(password), LoginFragment.class   );
 
 
-
-                    // progressDialog.dismiss();
-                }
-               /* else if (userId.equalsIgnoreCase("TABISH")&&  password.equalsIgnoreCase("jamal")&& mPin.equalsIgnoreCase("")) {
-                   intentToMpin();
-                }*/
-                // This condition is not valid for dynamic
-                else {
-                    loginIdEt.setError(getString(R.string.invalid_userid));
-                    loginPassEt.setError(getString(R.string.invalid_password));
-
-                }
 
 
 
@@ -262,10 +211,10 @@ AppDatabase appDatabase;
 
                 PmaygMasterRequest pmaygMasterRequest=new PmaygMasterRequest();
 
-               // String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyLoginid(),getCurrentContext());
-                pmaygMasterRequest.setUser_id("SKEDSKROHIT");
-                pmaygMasterRequest.setImei_no("d64af8bb2a57ae0e");
-                pmaygMasterRequest.setDevice_name("samsung-a21s-SM-A217F");
+                String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getLoginId(), getContext());
+                pmaygMasterRequest.setUser_id(loginId);
+                pmaygMasterRequest.setImei_no(imeiNo);
+                pmaygMasterRequest.setDevice_name(deviceInfo);
                 pmaygMasterRequest.setLocation_coordinate("1232323");
 
 
@@ -462,10 +411,10 @@ AppDatabase appDatabase;
 
                 NrlmMasterRequest nrlmMasterRequest=new NrlmMasterRequest();
 
-                // String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyLoginid(),getCurrentContext());
-                nrlmMasterRequest.setUser_id("SKEDSKROHIT");
-                nrlmMasterRequest.setImei_no("d64af8bb2a57ae0e");
-                nrlmMasterRequest.setDevice_name("samsung-a21s-SM-A217F");
+                 String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getLoginId(),getContext());
+                nrlmMasterRequest.setUser_id(loginId);
+                nrlmMasterRequest.setImei_no(imeiNo);
+                nrlmMasterRequest.setDevice_name(deviceInfo);
                 nrlmMasterRequest.setLocation_coordinate("1232323");
 
 
@@ -632,7 +581,7 @@ AppDatabase appDatabase;
 
     }
 
-    public void getLoginAPI()
+    public void getLoginAPI(String userId, String password)
     {
         if(NetworkFactory.isInternetOn(getContext()))
         {
@@ -653,16 +602,20 @@ AppDatabase appDatabase;
 
 
 
-                @SuppressLint("HardwareIds") String  imeiNo = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                imeiNo = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                deviceInfo=AppUtils.getInstance().getDeviceInfo();
 
                 LoginRequest loginRequest=new LoginRequest();
 
+
                 // String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyLoginid(),getCurrentContext());
-                loginRequest.setUser_id("SKEDSKROHIT");
-                loginRequest.setUser_password("2c6626b3e420cda7db59a680873f132b8163e302510d2499c1abdd2d61d37219");
-                loginRequest.setImei_no("d64af8bb2a57ae0e");
-                loginRequest.setDevice_name("samsung-a21s-SM-A217F");
+                loginRequest.setUser_id(userId);
+               // loginRequest.setUser_password(AppUtils.getInstance().getSha256(password));
+               loginRequest.setUser_password("2c6626b3e420cda7db59a680873f132b8163e302510d2499c1abdd2d61d37219");
+                loginRequest.setImei_no(imeiNo);
+                loginRequest.setDevice_name(deviceInfo);
                 loginRequest.setApp_version("1.0.0");
+                PreferenceFactory.getInstance().saveSharedPrefrecesData(PreferenceKeyManager.getLoginId(),userId,getContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     loginRequest.setDate(AppUtils.getInstance().getCurrentDate());
                 }
@@ -753,35 +706,46 @@ AppDatabase appDatabase;
                             appDatabase.nrlmInfoDao().deleteAll();
                             int size=response.length();
 
-                            for(int i=0;i<1;i++)
-                            {
+
                                 try {
-                                    JSONObject data=response.getJSONObject("data");
-                                    JSONArray reason=data.getJSONArray("reason");
-                                    JSONObject userData=data.getJSONObject("user_data");
+                                    JSONObject data = response.getJSONObject("data");
+                                    JSONObject userData = data.getJSONObject("user_data");
+                                    if (!(userData.has("Errorstatus")))
 
-                                    appDatabase.loginInfoDao().insert(new LoginInfoEntity(userData.getString("user_id"),"123456",userData.getString("mobile_number")
-                                            ,userData.getString("state_code"),userData.getString("state_short_name"),userData.getString("server_date_time"),userData.getString("language_id")
-                                            ,userData.getString("login_attempt"),userData.getString("logout_days"),userData.getString("user_name")));
-
-
-                                    for (int j=0; j<reason.length();j++)
                                     {
-                                        String reasonName=reason.getJSONObject(j).getString("reason_name");
+                                        JSONArray reason = data.getJSONArray("reason");
+
+
+                                    appDatabase.loginInfoDao().insert(new LoginInfoEntity(userData.getString("user_id"), "123456", userData.getString("mobile_number")
+                                            , userData.getString("state_code"), userData.getString("state_short_name"), userData.getString("server_date_time"), userData.getString("language_id")
+                                            , userData.getString("login_attempt"), userData.getString("logout_days"), userData.getString("user_name")));
+
+
+                                    for (int j = 0; j < reason.length(); j++) {
+                                        String reasonName = reason.getJSONObject(j).getString("reason_name");
                                         // String reasonId=reason.getJSONObject(j).getString("reason_id");
 
                                         appDatabase.reasonInfoDao().insert(new ReasonInfoEntity(reasonName));
                                     }
+                                        LoginInfoEntity loginData=appDatabase.loginInfoDao().getLoginData();
+
+                                        AppUtils.getInstance().showLog("----"+loginData, LoginFragment.class);
+                                        callPmaygMasterAPI();
 
 
+                                    }else {
+                                        progressDialog.dismiss();
 
+                                        DialogFactory.getInstance().showAlertDialog(getContext(),1,"Alert!",userData.getString("Errorstatus"),"Ok",true);
+
+                                    }
 
 
 
                                 } catch (JSONException e) {
                                     throw new RuntimeException(e);
                                 }
-                            }
+
 
 
                             // nrlmMasterResponse.getData();
@@ -798,7 +762,6 @@ AppDatabase appDatabase;
                        // progressDialog.dismiss();
                        // intentToMpin();
                         //callNrlmMasterAPI();
-                        callPmaygMasterAPI();
                     }
 
 //progressDialog.dismiss();

@@ -61,6 +61,8 @@ import com.example.convergenceapp.utils.AppUtils;
 import com.example.convergenceapp.utils.Cryptography;
 import com.example.convergenceapp.utils.DialogFactory;
 import com.example.convergenceapp.utils.NetworkFactory;
+import com.example.convergenceapp.utils.PreferenceFactory;
+import com.example.convergenceapp.utils.PreferenceKeyManager;
 import com.example.convergenceapp.vollyCall.VolleyResult;
 import com.example.convergenceapp.vollyCall.VolleyService;
 import com.google.gson.Gson;
@@ -886,6 +888,10 @@ Toolbar toolbar_home;
                   AppUtils.getInstance().showLog("selectedmemberCode "+selectedmemberCode, HomeFragment.class);
                   AppUtils.getInstance().showLog("selectedmember "+selectedmember, HomeFragment.class);
 
+
+
+                  //appDatabase.memberEntryInfoDao().insert();
+
                 syncAPI("SKEDSKROHIT","d64af8bb2a57ae0e","samsung-a21s-SM-A217F","1232323","pmayg","" +
                         "xyz","vf",selectedNrlmVillageCode,beneficiaryMobileNo,selectedBenAvailable,"Anita","no","Benefiacry expired","450","054","a","asdf","2023-04-18 17:58:33.667");
             }
@@ -1687,6 +1693,8 @@ private void showOtherMemberDialog()
         appDatabase.nrlmInfoDao().deleteAll();
         appDatabase.loginInfoDao().deleteAll();
         appDatabase.reasonInfoDao().deleteAll();
+        PreferenceFactory.getInstance().removeSharedPrefrencesData(PreferenceKeyManager.getLoginId(),getContext());
+      //  PreferenceFactory.getInstance().removeSharedPrefrencesData(PreferenceKeyManager.getPrefKeyMpin(),getContext());
 
         NavDirections navDirections= HomeFragmentDirections.actionHomeFragmentToLoginFragment();
         navController.navigate(navDirections);

@@ -7,6 +7,6 @@ import androidx.room.Query;
 @Dao
 public interface MemberEntryInfoDao {
     @Insert
-    public void insert();
+    public void insert(MemberEntryInfoDao memberEntryInfoDao);
 
 }

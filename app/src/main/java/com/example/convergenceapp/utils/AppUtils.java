@@ -105,19 +105,7 @@ public class  AppUtils {
         return json;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @NonNull
-    public String getSha256(@NonNull String plain_text) {
-        MessageDigest digest = null;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        byte[] hash = null;
-        hash = digest.digest(plain_text.getBytes(StandardCharsets.UTF_8));
-        return bytesToHex(hash);
-    }
+
 
     @NonNull
     private String bytesToHex(@NonNull byte[] hash) {
@@ -193,6 +181,21 @@ public class  AppUtils {
         //AppUtils.getInstance().showLog("CurrentDtaeAndTime"+format,AppUtils.class);
         return format;
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @NonNull
+    public String getSha256(@NonNull String plain_text) {
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        byte[] hash = null;
+        hash = digest.digest(plain_text.getBytes(StandardCharsets.UTF_8));
+        return bytesToHex(hash);
+    }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getCurrentDate() {
@@ -226,6 +229,9 @@ public class  AppUtils {
             Toast.makeText(context, "Language already selected!", Toast.LENGTH_SHORT).show();
         }*/
     }
+
+
+
 
     public  void showLog(String logMsg, Class application) {
         if (wantToShow) {

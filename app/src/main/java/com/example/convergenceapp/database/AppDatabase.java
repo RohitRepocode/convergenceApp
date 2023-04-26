@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.convergenceapp.database.dao.LoginInfoDao;
+import com.example.convergenceapp.database.dao.MemberEntryInfoDao;
 import com.example.convergenceapp.database.dao.NrlmInfoDao;
 import com.example.convergenceapp.database.dao.PmaygInfoDao;
 import com.example.convergenceapp.database.dao.ReasonInfoDao;
@@ -32,6 +33,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NrlmInfoDao nrlmInfoDao();
     public abstract PmaygInfoDao pmaygInfoDao();
     public abstract ReasonInfoDao reasonInfoDao();
+
+    public abstract MemberEntryInfoDao memberEntryInfoDao();
 
 
     public static AppDatabase getDatabase(final Context context) {

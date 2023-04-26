@@ -5,6 +5,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import com.example.convergenceapp.database.entity.LoginInfoEntity;
+
+import java.util.List;
+
 @Dao
 public interface LoginInfoDao {
 
@@ -19,4 +22,6 @@ public interface LoginInfoDao {
     @Query("delete from logininfoentity")
     void deleteAll();
 
+    @Query("select distinct * from LoginInfoEntity")
+    LoginInfoEntity getLoginData();
 }
