@@ -100,13 +100,7 @@ public class NrlmMasterResponse {
             this.lgd_district_code = lgd_district_code;
         }
 
-        public String getGrampanchayat_code() {
-            return grampanchayat_code;
-        }
 
-        public void setGrampanchayat_code(String grampanchayat_code) {
-            this.grampanchayat_code = grampanchayat_code;
-        }
 
         public String getDistrict_name() {
             return district_name;
@@ -190,7 +184,19 @@ public class NrlmMasterResponse {
 
         public String member_name;
         public String lgd_district_code;
+
+
+
         public String grampanchayat_code;
+
+        public String getGrampanchayat_code() {
+            return grampanchayat_code;
+        }
+
+        public void setGrampanchayat_code(String grampanchayat_code) {
+            this.grampanchayat_code = grampanchayat_code;
+        }
+
         public String district_name;
         public String block_name;
         public String lgd_gp_code;

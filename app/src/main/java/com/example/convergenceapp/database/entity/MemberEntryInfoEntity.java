@@ -23,9 +23,41 @@ public class MemberEntryInfoEntity {
 */
     @PrimaryKey(autoGenerate = true)
     public int id;
-    private String gp_Name,scheme_Name,ben_Id,lgd_GpCode,lgd_Villagecode,mobile_no,ben_availability,any_Familyinshg,willing_joinshg,reason,shg_Code,member_Code,village_Code,
-    created_on;
+    private String gp_Name;
+    private String scheme_Name;
+    private String ben_Id;
+    private String lgd_GpCode;
+    private String lgd_Villagecode;
+    private String mobile_no;
+    private String ben_availability;
+    private String any_Familyinshg;
+    private String willing_joinshg;
+    private String reason;
+    private String shg_Code;
+    private String member_Code;
+    private String village_Code;
+    private String created_on;
 
+
+
+    private String appVersion;
+    private String syncFlag;
+
+
+    public String getSyncFlag() {
+        return syncFlag;
+    }
+
+    public void setSyncFlag(String syncFlag) {
+        this.syncFlag = syncFlag;
+    }
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
 
     public String getGp_Name() {
         return gp_Name;
@@ -139,7 +171,7 @@ public class MemberEntryInfoEntity {
         this.created_on = created_on;
     }
 
-    public MemberEntryInfoEntity( String gp_Name, String scheme_Name, String ben_Id, String lgd_GpCode, String lgd_Villagecode, String mobile_no, String ben_availability, String any_Familyinshg, String willing_joinshg, String reason, String shg_Code, String member_Code, String village_Code, String created_on) {
+    public MemberEntryInfoEntity( String gp_Name, String scheme_Name, String ben_Id, String lgd_GpCode, String lgd_Villagecode, String mobile_no, String ben_availability, String any_Familyinshg, String willing_joinshg, String reason, String shg_Code, String member_Code, String village_Code, String created_on,String appVersion, String syncFlag) {
         this.gp_Name = gp_Name;
         this.scheme_Name = scheme_Name;
         this.ben_Id = ben_Id;
@@ -154,5 +186,7 @@ public class MemberEntryInfoEntity {
         this.member_Code = member_Code;
         this.village_Code = village_Code;
         this.created_on = created_on;
+        this.appVersion = appVersion;
+        this.syncFlag=syncFlag;
     }
 }

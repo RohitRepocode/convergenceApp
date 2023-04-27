@@ -19,6 +19,8 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper.Callback;
 import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
 import com.example.convergenceapp.database.dao.LoginInfoDao;
 import com.example.convergenceapp.database.dao.LoginInfoDao_Impl;
+import com.example.convergenceapp.database.dao.MemberEntryInfoDao;
+import com.example.convergenceapp.database.dao.MemberEntryInfoDao_Impl;
 import com.example.convergenceapp.database.dao.NrlmInfoDao;
 import com.example.convergenceapp.database.dao.NrlmInfoDao_Impl;
 import com.example.convergenceapp.database.dao.PmaygInfoDao;
@@ -46,6 +48,8 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   private volatile ReasonInfoDao _reasonInfoDao;
 
+  private volatile MemberEntryInfoDao _memberEntryInfoDao;
+
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(7) {
@@ -55,9 +59,9 @@ public final class AppDatabase_Impl extends AppDatabase {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `NrlmInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_code` TEXT, `lgd_gp_code` TEXT, `gp_name` TEXT, `village_code` TEXT, `village_name` TEXT, `shg_name` TEXT, `shg_code` TEXT, `member_name` TEXT, `member_code` TEXT, `user_id` TEXT, `block_name` TEXT, `lgd_state_code` TEXT, `state_name` TEXT, `state_code` TEXT, `block_code` TEXT, `district_name` TEXT, `lgd_district_code` TEXT, `lgd_block_code` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `PmaygInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_code` TEXT, `flag` TEXT, `gp_name` TEXT, `village_code` TEXT, `village_name` TEXT, `scheme` TEXT, `beneficiary_holder_name` TEXT, `beneficiary_id` TEXT, `ifsc_code` TEXT, `beneficiary_acc_no` TEXT, `beneficiary_bank_name` TEXT, `beneficiary_branch_name` TEXT, `mobile_no` TEXT, `member_name` TEXT, `holder_sync_flag` TEXT, `mothername` TEXT, `districtname` TEXT, `blockcode` TEXT, `districtcode` TEXT, `statecode` TEXT, `fathername` TEXT, `blockname` TEXT, `sl_no_member` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `ReasonInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `reason` TEXT)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `MemberEntryInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_Name` TEXT, `scheme_Name` TEXT, `ben_Id` TEXT, `lgd_GpCode` TEXT, `lgd_Villagecode` TEXT, `mobile_no` TEXT, `ben_availability` TEXT, `any_Familyinshg` TEXT, `willing_joinshg` TEXT, `reason` TEXT, `shg_Code` TEXT, `member_Code` TEXT, `village_Code` TEXT, `created_on` TEXT)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `MemberEntryInfoEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gp_Name` TEXT, `scheme_Name` TEXT, `ben_Id` TEXT, `lgd_GpCode` TEXT, `lgd_Villagecode` TEXT, `mobile_no` TEXT, `ben_availability` TEXT, `any_Familyinshg` TEXT, `willing_joinshg` TEXT, `reason` TEXT, `shg_Code` TEXT, `member_Code` TEXT, `village_Code` TEXT, `created_on` TEXT, `appVersion` TEXT, `syncFlag` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e8e52da11f48ee31c917a6c23181a01f')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fa21fde9e8503a08ddb3fb60268ad5db')");
       }
 
       @Override
@@ -201,7 +205,7 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoReasonInfoEntity + "\n"
                   + " Found:\n" + _existingReasonInfoEntity);
         }
-        final HashMap<String, TableInfo.Column> _columnsMemberEntryInfoEntity = new HashMap<String, TableInfo.Column>(15);
+        final HashMap<String, TableInfo.Column> _columnsMemberEntryInfoEntity = new HashMap<String, TableInfo.Column>(17);
         _columnsMemberEntryInfoEntity.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMemberEntryInfoEntity.put("gp_Name", new TableInfo.Column("gp_Name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMemberEntryInfoEntity.put("scheme_Name", new TableInfo.Column("scheme_Name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -217,6 +221,8 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsMemberEntryInfoEntity.put("member_Code", new TableInfo.Column("member_Code", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMemberEntryInfoEntity.put("village_Code", new TableInfo.Column("village_Code", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMemberEntryInfoEntity.put("created_on", new TableInfo.Column("created_on", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMemberEntryInfoEntity.put("appVersion", new TableInfo.Column("appVersion", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMemberEntryInfoEntity.put("syncFlag", new TableInfo.Column("syncFlag", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysMemberEntryInfoEntity = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesMemberEntryInfoEntity = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoMemberEntryInfoEntity = new TableInfo("MemberEntryInfoEntity", _columnsMemberEntryInfoEntity, _foreignKeysMemberEntryInfoEntity, _indicesMemberEntryInfoEntity);
@@ -228,7 +234,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "e8e52da11f48ee31c917a6c23181a01f", "35934e68feb41155d538721a0278924a");
+    }, "fa21fde9e8503a08ddb3fb60268ad5db", "4c151cf5c86aefeaa4572a7e18755979");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -272,6 +278,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     _typeConvertersMap.put(NrlmInfoDao.class, NrlmInfoDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(PmaygInfoDao.class, PmaygInfoDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(ReasonInfoDao.class, ReasonInfoDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(MemberEntryInfoDao.class, MemberEntryInfoDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -339,6 +346,20 @@ public final class AppDatabase_Impl extends AppDatabase {
           _reasonInfoDao = new ReasonInfoDao_Impl(this);
         }
         return _reasonInfoDao;
+      }
+    }
+  }
+
+  @Override
+  public MemberEntryInfoDao memberEntryInfoDao() {
+    if (_memberEntryInfoDao != null) {
+      return _memberEntryInfoDao;
+    } else {
+      synchronized(this) {
+        if(_memberEntryInfoDao == null) {
+          _memberEntryInfoDao = new MemberEntryInfoDao_Impl(this);
+        }
+        return _memberEntryInfoDao;
       }
     }
   }

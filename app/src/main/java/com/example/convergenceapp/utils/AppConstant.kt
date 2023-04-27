@@ -14,6 +14,7 @@ class AppConstant {
         const val vo_clfSelection: String = "vo_clf"
         const val nrlm_formation_date: String = "01-06-2011"
         const val st = "securityToken"
+
         const val s= "n{j5Y[<!Ps*HWCWg"
         val items = arrayOf("Income (Before coming into NRLM Fold)", "Income at present")
         val confirmation = arrayOf("Do you confirm all this entry", "Do You want still add more activity")

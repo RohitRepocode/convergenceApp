@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import kotlin.jvm.Synchronized;
+
 public class PmaygMasterResponse {
     public Data data;
     public String message;
@@ -37,8 +39,14 @@ public class PmaygMasterResponse {
         public String reg_no;
         public String beneficiaryname;
         public String familydet_name;
-        public String gp_code;
+
+
+
+        public String grampanchayatcode;
         public String statename;
+
+
+
         public String mobileno;
         public String scheme;
         public String flag_sync;
@@ -68,7 +76,13 @@ public class PmaygMasterResponse {
         }
 
 
+        public String getGrampanchayatcode() {
+            return grampanchayatcode;
+        }
 
+        public void setGrampanchayatcode(String grampanchayatcode) {
+            this.grampanchayatcode = grampanchayatcode;
+        }
 
 
         public String getFlag_sync() {
@@ -112,13 +126,7 @@ public class PmaygMasterResponse {
             this.familydet_name = familydet_name;
         }
 
-        public String getGp_code() {
-            return gp_code;
-        }
 
-        public void setGp_code(String gp_code) {
-            this.gp_code = gp_code;
-        }
 
         public String getStatename() {
             return statename;

@@ -28,6 +28,7 @@ import com.example.convergenceapp.MpinActivity;
 import com.example.convergenceapp.R;
 import com.example.convergenceapp.database.AppDatabase;
 import com.example.convergenceapp.database.entity.LoginInfoEntity;
+import com.example.convergenceapp.database.entity.MemberEntryInfoEntity;
 import com.example.convergenceapp.database.entity.NrlmInfoEntity;
 import com.example.convergenceapp.database.entity.PmaygInfoEntity;
 import com.example.convergenceapp.database.entity.ReasonInfoEntity;
@@ -56,6 +57,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -211,7 +214,7 @@ AppDatabase appDatabase;
 
                 PmaygMasterRequest pmaygMasterRequest=new PmaygMasterRequest();
 
-                String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getLoginId(), getContext());
+                String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefLoginId(), getContext());
                 pmaygMasterRequest.setUser_id(loginId);
                 pmaygMasterRequest.setImei_no(imeiNo);
                 pmaygMasterRequest.setDevice_name(deviceInfo);
@@ -246,8 +249,11 @@ AppDatabase appDatabase;
             mResultCallBack = new VolleyResult() {
                 @Override
                 public void notifySuccess(String requestType, JSONObject response) {
+
                  //   progressDialog.dismiss();
               /*      JSONObject jsonObject = null;    //manish commented
+
+
 
                     String objectResponse="";
                     if(response.has("data")){
@@ -284,6 +290,8 @@ AppDatabase appDatabase;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         try {
+                            List<String> memberBenIds=new ArrayList<>();
+
                             Cryptography cryptography = new Cryptography();
                            // jsonObject = new JSONObject(cryptography.decrypt(objectResponse)); //Manish comment
                             //if (jsonObject.getString("E200").equalsIgnoreCase("Success"))
@@ -308,7 +316,7 @@ AppDatabase appDatabase;
 
                            // nrlmMasterResponse.getData();
                             for(int j=0;j<pmaygMasterResponse.getData().getAssign_data().size();j++){
-                                gp_code=pmaygMasterResponse.getData().getAssign_data().get(j).getGp_code();
+                                gp_code=pmaygMasterResponse.getData().getAssign_data().get(j).getGrampanchayatcode();
                                gp_name=pmaygMasterResponse.getData().getAssign_data().get(j).getGrampanchayatname();
                                village_code=pmaygMasterResponse.getData().getAssign_data().get(j).getVillagecode();
                                 village_name=pmaygMasterResponse.getData().getAssign_data().get(j).getVillagename();
@@ -332,23 +340,25 @@ AppDatabase appDatabase;
                                 ifsc_code=pmaygMasterResponse.getData().getAssign_data().get(j).getIfsc_code();
                                 flag="0";
 
+                                AppUtils.getInstance().showLog("GPCode"+gp_code, LoginFragment.class);
+
                                 appDatabase.pmaygInfoDao().insert(new PmaygInfoEntity(gp_code,gp_name,village_code
                                         ,village_name,scheme,beneficiary_holder_name,beneficiary_id
                                         ,beneficiary_acc_no,beneficiary_bank_name,beneficiary_branch_name,mobile_no,member_name,holder_sync_flag,mothername
                                         ,districtname,blockcode,districtcode,statecode,fathername,blockname,sl_no_member,ifsc_code,flag));
                                 String beneficiaryname= pmaygMasterResponse.getData().getAssign_data().get(j).getBeneficiaryname();
-                                Toast.makeText(getContext(),beneficiaryname,Toast.LENGTH_LONG).show();
+                             //   Toast.makeText(getContext(),beneficiaryname,Toast.LENGTH_LONG).show();
 
 
 
                             }
 
-
+                                memberBenIds=appDatabase.memberEntryInfoDao().getBenIds();
+                            for(int i=0;i<memberBenIds.size();i++)
                             {
-                              //  AppUtils.getInstance().showLog("responseJSONmain" + error.toString(), LoginFragment.class);
-
-
+                                appDatabase.pmaygInfoDao().updateSyncFlag(memberBenIds.get(i));
                             }
+
 
                         } catch (Exception e) {
                         //    progressDialog.dismiss();
@@ -411,7 +421,7 @@ AppDatabase appDatabase;
 
                 NrlmMasterRequest nrlmMasterRequest=new NrlmMasterRequest();
 
-                 String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getLoginId(),getContext());
+                 String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefLoginId(),getContext());
                 nrlmMasterRequest.setUser_id(loginId);
                 nrlmMasterRequest.setImei_no(imeiNo);
                 nrlmMasterRequest.setDevice_name(deviceInfo);
@@ -511,7 +521,7 @@ AppDatabase appDatabase;
                             for(int j=0;j<nrlmMasterResponse.getData().getAssign_data().size();j++){
 
                                 String shgCode= nrlmMasterResponse.getData().getAssign_data().get(j).getShg_code();
-                                Toast.makeText(getContext(),shgCode,Toast.LENGTH_LONG).show();
+                              //  Toast.makeText(getContext(),shgCode,Toast.LENGTH_LONG).show();
 
                                         nrlmgp_code=nrlmMasterResponse.getData().getAssign_data().get(j).getGrampanchayat_code();
                                         nrlmlgd_gp_code=nrlmMasterResponse.getData().getAssign_data().get(j).getLgd_gp_code();
@@ -603,6 +613,8 @@ AppDatabase appDatabase;
 
 
                 imeiNo = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                AppUtils.getInstance().showLog("IMEI"+imeiNo, LoginFragment.class);
+                PreferenceFactory.getInstance().saveSharedPrefrecesData(PreferenceKeyManager.getPrefImeiNo(),imeiNo,getContext());
                 deviceInfo=AppUtils.getInstance().getDeviceInfo();
 
                 LoginRequest loginRequest=new LoginRequest();
@@ -610,12 +622,11 @@ AppDatabase appDatabase;
 
                 // String loginId=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefKeyLoginid(),getCurrentContext());
                 loginRequest.setUser_id(userId);
-               // loginRequest.setUser_password(AppUtils.getInstance().getSha256(password));
-               loginRequest.setUser_password("2c6626b3e420cda7db59a680873f132b8163e302510d2499c1abdd2d61d37219");
+               loginRequest.setUser_password(AppUtils.getInstance().getSha256(password));
+              // loginRequest.setUser_password("2c6626b3e420cda7db59a680873f132b8163e302510d2499c1abdd2d61d37219");
                 loginRequest.setImei_no(imeiNo);
                 loginRequest.setDevice_name(deviceInfo);
                 loginRequest.setApp_version("1.0.0");
-                PreferenceFactory.getInstance().saveSharedPrefrecesData(PreferenceKeyManager.getLoginId(),userId,getContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     loginRequest.setDate(AppUtils.getInstance().getCurrentDate());
                 }
@@ -692,6 +703,8 @@ AppDatabase appDatabase;
                         Log.d(TAG, "exceptionDataOfBlock: "+e.toString());
 
                     }*/
+
+                    PreferenceFactory.getInstance().saveSharedPrefrecesData(PreferenceKeyManager.getPrefLoginId(),userId,getContext());
 
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

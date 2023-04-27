@@ -152,9 +152,6 @@ public class PreferenceKeyManager {
     }
 
 
-    public static String getLoginId() {
-        return PrefImeiNo;
-    }
 
     public static String getPrefImeiNo() {
         return PrefImeiNo;

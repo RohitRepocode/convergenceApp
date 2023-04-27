@@ -51,6 +51,7 @@ import com.example.convergenceapp.database.dbBean.ReasonBean;
 import com.example.convergenceapp.database.dbBean.ShgBean;
 import com.example.convergenceapp.database.dbBean.VillageBean;
 import com.example.convergenceapp.database.entity.LoginInfoEntity;
+import com.example.convergenceapp.database.entity.MemberEntryInfoEntity;
 import com.example.convergenceapp.database.entity.ReasonInfoEntity;
 import com.example.convergenceapp.databinding.DialogBankDetailsBinding;
 import com.example.convergenceapp.databinding.FragmentHomeBinding;
@@ -85,7 +86,8 @@ Toolbar toolbar_home;
     List<String> list,list1,gpName,villageName,beneficiaryName,nrlmGpName,nrlmGpCode,nrlmVillageName,nrlmVillageCode,shgName,shgCode,memberName,memberCode,reasonList;
 
     String selectedGp,selectedVillage,selectedBeneficiary,selectedWIlling
-            ,selectedInShg,selectedBenAvailable,beneficiaryAccNo,beneficiaryId,selectedReason,
+            ,selectedInShg,selectedBenAvailable,beneficiaryAccNo,beneficiaryId,selectedReason,selectedLgdCode,selectedLgdVillageCode,
+
             beneficiaryBankName,beneficiaryBranchname,beneficiaryMobileNo, ifscCode,
     selectedNrlmGpCode,selectedNrlmGp,selectedNrlmVillageCode,selectedNrlmVillage,selectedShg,selectedShgCode,
             selectedmemberCode,selectedmember,fatherName,motherName;
@@ -178,6 +180,14 @@ Toolbar toolbar_home;
 
         binding.spinnerGp.setOnItemClickListener((adapterView, view1, i, l) -> {
             selectedGp= gpName.get(i);
+
+            selectedLgdCode=appDatabase.pmaygInfoDao().getLgdCode(selectedGp);
+            AppUtils.getInstance().showLog("This is LGD code"+selectedGp, HomeFragment.class);
+
+
+            AppUtils.getInstance().showLog("This is LGD code"+selectedLgdCode, HomeFragment.class);
+
+
          //   Toast.makeText(getContext(), selectedGp, Toast.LENGTH_SHORT).show();
              //GET village NAME
 
@@ -229,6 +239,7 @@ Toolbar toolbar_home;
             binding.spinnerReason.setText("");
 
 
+
             selectedVillage= "";selectedBeneficiary= "";selectedWIlling= "";
             selectedInShg= "";selectedBenAvailable= "";beneficiaryAccNo= "";beneficiaryId= "";selectedReason= "";
             beneficiaryBankName= "";beneficiaryBranchname= "";beneficiaryMobileNo= ""; ifscCode="";
@@ -253,6 +264,10 @@ Toolbar toolbar_home;
 
         binding.spinnerVillage.setOnItemClickListener((adapterView, view1, i, l) -> {
             selectedVillage= villageName.get(i);
+
+    selectedLgdVillageCode=appDatabase.pmaygInfoDao().getViilageLgdCode(selectedVillage);
+
+    AppUtils.getInstance().showLog("VillageCode"+selectedLgdVillageCode, HomeFragment.class);
             //GET beneficiary NAME
 
              beneficiaryBeans = appDatabase.pmaygInfoDao().getBenDetailsList(selectedVillage,"0");
@@ -565,7 +580,7 @@ Toolbar toolbar_home;
 
         // button Save
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+     /*   binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),selectedGp+selectedVillage+selectedBeneficiary+selectedWIlling
@@ -574,7 +589,7 @@ Toolbar toolbar_home;
                         selectedNrlmGpCode+selectedNrlmGp+selectedNrlmVillageCode+selectedNrlmVillage+selectedShg+selectedShgCode+
                         selectedmemberCode+selectedmember,Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
 
         ///   selectNrlmGP
 
@@ -691,7 +706,7 @@ Toolbar toolbar_home;
         binding.spinnerShgName.setOnItemClickListener((adapterView, view1, i, l) -> {
             selectedShg= shgName.get(i);
             selectedShgCode= shgCode.get(i);
-            Toast.makeText(getContext(),selectedShgCode, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(),selectedShgCode, Toast.LENGTH_SHORT).show();
 
             memberBeans = appDatabase.nrlmInfoDao().getMember(selectedShgCode);
            // Toast.makeText(getContext(),memberBeans.get(i).getMemberName(), Toast.LENGTH_SHORT).show();
@@ -863,11 +878,11 @@ Toolbar toolbar_home;
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),selectedGp+selectedVillage+selectedBeneficiary+selectedWIlling
+              /*  Toast.makeText(getContext(),selectedGp+selectedVillage+selectedBeneficiary+selectedWIlling
                         +selectedInShg+selectedBenAvailable+beneficiaryAccNo+beneficiaryId+selectedReason+
                         beneficiaryBankName+beneficiaryBranchname+beneficiaryMobileNo+ifscCode+
                         selectedNrlmGpCode+selectedNrlmGp+selectedNrlmVillageCode+selectedNrlmVillage+selectedShg+selectedShgCode+
-                        selectedmemberCode+selectedmember,Toast.LENGTH_LONG).show();
+                        selectedmemberCode+selectedmember,Toast.LENGTH_LONG).show();*/
                   AppUtils.getInstance().showLog("SelecltedGp "+selectedGp, HomeFragment.class);
                   AppUtils.getInstance().showLog("selectedVillage "+selectedVillage, HomeFragment.class);
                   AppUtils.getInstance().showLog("selectedBeneficiary "+selectedBeneficiary, HomeFragment.class);
@@ -888,12 +903,46 @@ Toolbar toolbar_home;
                   AppUtils.getInstance().showLog("selectedmemberCode "+selectedmemberCode, HomeFragment.class);
                   AppUtils.getInstance().showLog("selectedmember "+selectedmember, HomeFragment.class);
 
+                /*this.gp_Name = gp_Name;
+                this.scheme_Name = scheme_Name;
+                this.ben_Id = ben_Id;
+                this.lgd_GpCode = lgd_GpCode;
+                this.lgd_Villagecode = lgd_Villagecode;
+                this.mobile_no = mobile_no;
+                this.ben_availability = ben_availability;
+                this.any_Familyinshg = any_Familyinshg;
+                this.willing_joinshg = willing_joinshg;
+                this.reason = reason;
+                this.shg_Code = shg_Code;
+                this.member_Code = member_Code;
+                this.village_Code = village_Code;
+                this.created_on = created_on;*/
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    appDatabase.memberEntryInfoDao().insert(new MemberEntryInfoEntity(selectedGp,"PMAYG",beneficiaryId,selectedLgdCode,selectedLgdVillageCode,beneficiaryMobileNo,selectedBenAvailable,selectedInShg,selectedWIlling,selectedReason,selectedShgCode,selectedmemberCode,selectedNrlmVillageCode,AppUtils.getInstance().getCurrentDateAndTime(),AppUtils.appVersion,"0"));
+                }
+               List<MemberEntryInfoEntity>  membersyncdata=appDatabase.memberEntryInfoDao().getSyncData("0");
 
 
-                  //appDatabase.memberEntryInfoDao().insert();
+                //appDatabase.memberEntryInfoDao().insert();
 
-                syncAPI("SKEDSKROHIT","d64af8bb2a57ae0e","samsung-a21s-SM-A217F","1232323","pmayg","" +
-                        "xyz","vf",selectedNrlmVillageCode,beneficiaryMobileNo,selectedBenAvailable,"Anita","no","Benefiacry expired","450","054","a","asdf","2023-04-18 17:58:33.667");
+                if(NetworkFactory.isInternetOn(getContext())) {
+                    String userid=PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefLoginId(),getContext());
+                   String imei= PreferenceFactory.getInstance().getSharedPrefrencesData(PreferenceKeyManager.getPrefImeiNo(),getContext());
+                   String deviceInfo= AppUtils.getInstance().getDeviceInfo();
+
+                    syncAPI(userid,imei ,deviceInfo, "1232323", membersyncdata);
+
+                }else {
+                    //DialogFactory.getInstance().showAlertDialog(getContext(),1,"Alert!","Data saved Offline...","Ok",true);
+                    DialogFactory.getInstance().showAlertDialog(getContext(), 1, "Alert!", "Data saved offlinee...", "ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            refresh();
+                        }
+                    },null,null,true);
+
+                }
             }
         });
 
@@ -1486,7 +1535,7 @@ public  void SyncApi(String userid,String imei, String device, String location, 
     AppUtils.getInstance().showLog("Actual Data-----"+data, HomeFragment.class);
 
 }
-   public void syncAPI(String userid,String imei, String device, String location, String scheme, String reg, String lgdgp, String lgdvill, String mobile, String beniavai,String familymem,String join, String rsn,String shgcd,String shgmemcod, String entity, String appvr,String cretedon )
+   public void syncAPI(String userid,String imei, String device, String location,List<MemberEntryInfoEntity> memberSyncData )
     {
         if(NetworkFactory.isInternetOn(getContext()))
         {
@@ -1495,7 +1544,7 @@ public  void SyncApi(String userid,String imei, String device, String location, 
             progressDialog.setMessage("Loading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
-
+            List<String> benIdList=new ArrayList<>();
 
             //*******make json object is encrypted and *********//*
             JSONObject encryptedObject =new JSONObject();
@@ -1505,35 +1554,40 @@ public  void SyncApi(String userid,String imei, String device, String location, 
 
 
 
-
                 @SuppressLint("HardwareIds") String  imeiNo = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-
-                BeneficiaryDetails beneficiaryDetails=new BeneficiaryDetails();
-
-                beneficiaryDetails.setScheme_name(scheme);
-                beneficiaryDetails.setReg_no(reg);
-                beneficiaryDetails.setLgd_gp_cd(lgdgp);
-                beneficiaryDetails.setLgd_vill_cd(lgdvill);
-                beneficiaryDetails.setMobile_no(mobile);
-                beneficiaryDetails.setBenif_avail(beniavai);
-                beneficiaryDetails.setFamily_mem_shg(familymem);
-                beneficiaryDetails.setJoin_shg(join);
-                beneficiaryDetails.setReason(rsn);
-                beneficiaryDetails.setShg_code(shgcd);
-                beneficiaryDetails.setShg_member_code(shgmemcod);
-                beneficiaryDetails.setEntity_code(entity);
-                beneficiaryDetails.setApp_ver(appvr);
-                beneficiaryDetails.setCreated_on_app(cretedon);
                 ArrayList<BeneficiaryDetails> Bendata = new ArrayList<>();
-                Bendata.add(beneficiaryDetails);
 
 
-                SyncRequest syncRequest =new SyncRequest();
-                syncRequest.setUser_id(userid);
-                syncRequest.setImei_no(imeiNo);
-                syncRequest.setDevice_name(device);
-                syncRequest.setLocation_coordinate(location);
-                syncRequest.setBenficiary_dtl(Bendata);
+                for(int i=0;i<memberSyncData.size();i++) {
+                    BeneficiaryDetails beneficiaryDetails=new BeneficiaryDetails();
+
+
+                    beneficiaryDetails.setScheme_name(memberSyncData.get(i).getScheme_Name());
+                    beneficiaryDetails.setReg_no(memberSyncData.get(i).getBen_Id());
+                    beneficiaryDetails.setLgd_gp_cd(memberSyncData.get(i).getLgd_GpCode());
+                    beneficiaryDetails.setLgd_vill_cd(memberSyncData.get(i).getLgd_Villagecode());
+                    beneficiaryDetails.setMobile_no(memberSyncData.get(i).getMobile_no());
+                    beneficiaryDetails.setBenif_avail(memberSyncData.get(i).getBen_availability());
+                    beneficiaryDetails.setFamily_mem_shg(memberSyncData.get(i).getAny_Familyinshg());
+                    beneficiaryDetails.setJoin_shg(memberSyncData.get(i).getWilling_joinshg());
+                    beneficiaryDetails.setReason(memberSyncData.get(i).getReason());
+                    beneficiaryDetails.setShg_code(memberSyncData.get(i).getShg_Code());
+                    beneficiaryDetails.setShg_member_code(memberSyncData.get(i).getMember_Code());
+                    beneficiaryDetails.setEntity_code(memberSyncData.get(i).getVillage_Code());
+                    beneficiaryDetails.setApp_ver(memberSyncData.get(i).getAppVersion());
+                    beneficiaryDetails.setCreated_on_app(memberSyncData.get(i).getCreated_on());
+                    benIdList.add(memberSyncData.get(i).getBen_Id());
+                    Bendata.add(beneficiaryDetails);
+                }
+
+
+                    SyncRequest syncRequest = new SyncRequest();
+                    syncRequest.setUser_id(userid);
+                    syncRequest.setImei_no(imeiNo);
+                    syncRequest.setDevice_name(device);
+                    syncRequest.setLocation_coordinate(location);
+                    syncRequest.setBenficiary_dtl(Bendata);
+
 
 
 
@@ -1581,7 +1635,13 @@ public  void SyncApi(String userid,String imei, String device, String location, 
                         if(response.getString("message").equalsIgnoreCase("success"))
                         {
 
-                            appDatabase.pmaygInfoDao().updateSyncFlag(beneficiaryId);
+                          //  appDatabase.pmaygInfoDao().updateSyncFlag(beneficiaryId);
+                            for (int i=0;i<benIdList.size();i++)
+                            {
+                                String benId=benIdList.get(i);
+                                appDatabase.memberEntryInfoDao().setUpdateSyncFlag(benId);
+                                appDatabase.pmaygInfoDao().updateSyncFlag(benId);
+                            }
                             progressDialog.dismiss();
                             Toast.makeText(getContext(),"Synced successfully",Toast.LENGTH_LONG).show();
                             AppUtils.getInstance().showLog("Synced", HomeFragment.class);
@@ -1693,7 +1753,7 @@ private void showOtherMemberDialog()
         appDatabase.nrlmInfoDao().deleteAll();
         appDatabase.loginInfoDao().deleteAll();
         appDatabase.reasonInfoDao().deleteAll();
-        PreferenceFactory.getInstance().removeSharedPrefrencesData(PreferenceKeyManager.getLoginId(),getContext());
+        PreferenceFactory.getInstance().removeSharedPrefrencesData(PreferenceKeyManager.getPrefLoginId(),getContext());
       //  PreferenceFactory.getInstance().removeSharedPrefrencesData(PreferenceKeyManager.getPrefKeyMpin(),getContext());
 
         NavDirections navDirections= HomeFragmentDirections.actionHomeFragmentToLoginFragment();
@@ -1707,7 +1767,14 @@ private void showOtherMemberDialog()
         navController.navigate(navDirections);
 
     }
+public void refresh ()
+{
+    NavController  navController = NavHostFragment.findNavController(this);
+    NavDirections navDirections=HomeFragmentDirections.actionHomeFragmentSelf();
+    navController.navigate(navDirections);
 
+
+}
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Do something that differs the Activity's menu here
@@ -1723,7 +1790,7 @@ private void showOtherMemberDialog()
         switch (item.getItemId()) {
 
             case R.id.logOut:
-                Toast.makeText(getContext(), "Working", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getContext(), "Working", Toast.LENGTH_SHORT).show();
                 logout();
 
                 // Not implemented here

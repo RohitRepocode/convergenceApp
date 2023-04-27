@@ -34,4 +34,12 @@ public interface PmaygInfoDao {
    @Query("update PmaygInfoEntity set flag='1' where beneficiary_id=:beneficiaryId")
     void updateSyncFlag(String beneficiaryId);
 
+   @Query("Select distinct gp_code from PmaygInfoEntity where gp_name=:gpName")
+    String getLgdCode(String gpName);
+
+   @Query("select distinct village_code from PmaygInfoEntity where village_name=:villageName")
+    String getViilageLgdCode(String villageName);
+
+
+
 }
