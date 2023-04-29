@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -81,7 +82,11 @@ import javax.crypto.NoSuchPaddingException;
 public class HomeFragment extends Fragment {
     public VolleyResult mResultCallBack = null;
     List<OtherMembersName> otherMemberData;
-    ArrayAdapter<String> selectionFromAdapter,selectionFromAdapter1,gpAdapter,nrlmGpAdapter,nrlmVillageAdapter,shgAdapter,memberAdapter,reasonAdapter,wiilingAdapter,villageAdapter,beneficiaryAdapter;
+    List<String> familyMemberNames;
+
+    int flag=0;
+
+    ArrayAdapter<String> selectionFromAdapter,otherMemberAdapter,selectionFromAdapter1,gpAdapter,nrlmGpAdapter,nrlmVillageAdapter,shgAdapter,memberAdapter,reasonAdapter,wiilingAdapter,villageAdapter,beneficiaryAdapter;
 Toolbar toolbar_home;
     List<String> list,list1,gpName,villageName,beneficiaryName,nrlmGpName,nrlmGpCode,nrlmVillageName,nrlmVillageCode,shgName,shgCode,memberName,memberCode,reasonList;
 
@@ -180,7 +185,7 @@ Toolbar toolbar_home;
 
         binding.spinnerGp.setOnItemClickListener((adapterView, view1, i, l) -> {
             selectedGp= gpName.get(i);
-
+           flag=0;
             selectedLgdCode=appDatabase.pmaygInfoDao().getLgdCode(selectedGp);
             AppUtils.getInstance().showLog("This is LGD code"+selectedGp, HomeFragment.class);
 
@@ -216,6 +221,7 @@ Toolbar toolbar_home;
             binding.mobVis.setVisibility(View.GONE);
             binding.benAvaiVisi.setVisibility(View.GONE);
             binding.anyFamilyVisib.setVisibility(View.GONE);
+            binding.lisOfFamilyMember.setVisibility(View.GONE);
             binding.nrlmVillVissib.setVisibility(View.GONE);
             binding.ngpVisib.setVisibility(View.GONE);
             binding.shgVisi.setVisibility(View.GONE);
@@ -223,6 +229,8 @@ Toolbar toolbar_home;
             binding.btnSave.setVisibility(View.GONE);
             binding.willingVisib.setVisibility(View.GONE);
             binding.reasonVisi.setVisibility(View.GONE);
+            binding.memberOuterLay.setVisibility(View.GONE);
+
 
 
 
@@ -237,6 +245,9 @@ Toolbar toolbar_home;
             binding.spinnerMemberName.setText("");
             binding.spinnerWilling.setText("");
             binding.spinnerReason.setText("");
+            binding.SpinnerFamily.setText("");
+
+
 
 
 
@@ -264,7 +275,7 @@ Toolbar toolbar_home;
 
         binding.spinnerVillage.setOnItemClickListener((adapterView, view1, i, l) -> {
             selectedVillage= villageName.get(i);
-
+flag=0;
     selectedLgdVillageCode=appDatabase.pmaygInfoDao().getViilageLgdCode(selectedVillage);
 
     AppUtils.getInstance().showLog("VillageCode"+selectedLgdVillageCode, HomeFragment.class);
@@ -295,6 +306,7 @@ Toolbar toolbar_home;
             binding.btnSave.setVisibility(View.GONE);
             binding.willingVisib.setVisibility(View.GONE);
             binding.reasonVisi.setVisibility(View.GONE);
+            binding.memberOuterLay.setVisibility(View.GONE);
 
             //-----Seleted data set blank----
 
@@ -335,6 +347,8 @@ Toolbar toolbar_home;
 
 
         binding.spinnerBeneficiary.setOnItemClickListener((adapterView, view1, i, l) -> {
+
+            flag=0;
             selectedBeneficiary= beneficiaryName.get(i);
             beneficiaryId= beneficiaryBeans.get(i).getBenId();
             beneficiaryAccNo= beneficiaryBeans.get(i).getBenAccNo();
@@ -346,6 +360,14 @@ Toolbar toolbar_home;
             motherName= beneficiaryBeans.get(i).getMotherName();
 
              otherMemberData=appDatabase.pmaygInfoDao().getMemberData(beneficiaryId); //uper se niche le aana
+            familyMemberNames=new ArrayList<>();
+            for(int j=0;j<otherMemberData.size();j++)
+            {
+                familyMemberNames.add(otherMemberData.get(j).getMembersName());
+            }
+            familyMemberNames.add("NOT IN THE LIST");
+
+
 
             if(!beneficiaryMobileNo.equalsIgnoreCase("NA"))
             {
@@ -373,6 +395,7 @@ Toolbar toolbar_home;
             binding.btnSave.setVisibility(View.GONE);
             binding.willingVisib.setVisibility(View.GONE);
             binding.reasonVisi.setVisibility(View.GONE);
+            binding.memberOuterLay.setVisibility(View.GONE);
 
 
 
@@ -417,6 +440,7 @@ Toolbar toolbar_home;
 
         binding.spinnerBenAvail.setOnItemClickListener((adapterView, view1, i, l) -> {
             selectedBenAvailable= list.get(i);
+            flag=0;
             if (selectedBenAvailable.equalsIgnoreCase("Yes")) {
 
 
@@ -429,6 +453,7 @@ Toolbar toolbar_home;
                 binding.btnSave.setVisibility(View.GONE);
                 binding.willingVisib.setVisibility(View.GONE);
                 binding.reasonVisi.setVisibility(View.GONE);
+
 
                 //-----Seleted data set blank----
 
@@ -450,6 +475,7 @@ Toolbar toolbar_home;
             else  if (selectedBenAvailable.equalsIgnoreCase("No")) {{
 
                 binding.btnSave.setVisibility(View.VISIBLE);
+                flag=0;
 
                 // set Visibility
                 binding.anyFamilyVisib.setVisibility(View.GONE);
@@ -459,6 +485,8 @@ Toolbar toolbar_home;
                 binding.memberVisi.setVisibility(View.GONE);
                 binding.willingVisib.setVisibility(View.GONE);
                 binding.reasonVisi.setVisibility(View.GONE);
+                binding.lisOfFamilyMember.setVisibility(View.GONE);
+                binding.memberOuterLay.setVisibility(View.GONE);
 
                 //-----Seleted data set blank----
 
@@ -483,7 +511,7 @@ Toolbar toolbar_home;
             selectedInShg= list1.get(i);
             if (selectedInShg.equalsIgnoreCase("Yes (NRLM)")) {
 
-
+            flag=0;
                 // set Visibility
 
                 binding.nrlmVillVissib.setVisibility(View.VISIBLE);
@@ -493,6 +521,10 @@ Toolbar toolbar_home;
                 binding.btnSave.setVisibility(View.GONE);
                 binding.willingVisib.setVisibility(View.GONE);
                 binding.reasonVisi.setVisibility(View.GONE);
+                binding.lisOfFamilyMember.setVisibility(View.GONE);
+
+                binding.memberOuterLay.setVisibility(View.GONE);
+
 
                 //-----Seleted data set blank----
 
@@ -512,16 +544,18 @@ Toolbar toolbar_home;
             }
             else if (selectedInShg.equalsIgnoreCase("Yes (NON NRLM)")){
 
-
+               binding.SpinnerFamily.setText("");
+               flag=0;
 
                 // set Visibility
                 binding.nrlmVillVissib.setVisibility(View.GONE);
                 binding.ngpVisib.setVisibility(View.GONE);
                 binding.shgVisi.setVisibility(View.GONE);
                 binding.memberVisi.setVisibility(View.GONE);
-                binding.btnSave.setVisibility(View.VISIBLE);
+
                 binding.willingVisib.setVisibility(View.GONE);
                 binding.reasonVisi.setVisibility(View.GONE);
+                binding.lisOfFamilyMember.setVisibility(View.VISIBLE);
 
                 //-----Seleted data set blank----
 
@@ -529,6 +563,9 @@ Toolbar toolbar_home;
                 selectedNrlmGpCode= "";selectedNrlmGp= "";selectedNrlmVillageCode= "";selectedNrlmVillage= "";selectedShg= "";
                 selectedShgCode= "";selectedmemberCode= "";selectedmember= "";
 
+                otherMemberAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_text,familyMemberNames);
+                binding.SpinnerFamily.setAdapter(otherMemberAdapter);
+                otherMemberAdapter.notifyDataSetChanged();
 
 
                 binding.spinnerNrlmVillage.setText("");
@@ -541,7 +578,7 @@ Toolbar toolbar_home;
             }
             else if (selectedInShg.equalsIgnoreCase("No")){
 
-
+           flag=0;
 
                 // set Visibility
 
@@ -552,6 +589,9 @@ Toolbar toolbar_home;
                 binding.btnSave.setVisibility(View.GONE);
                 binding.willingVisib.setVisibility(View.VISIBLE);
                 binding.reasonVisi.setVisibility(View.GONE);
+                binding.lisOfFamilyMember.setVisibility(View.GONE);
+                binding.memberOuterLay.setVisibility(View.GONE);
+
 
                 //-----Seleted data set blank----
 
@@ -574,7 +614,26 @@ Toolbar toolbar_home;
         });
 
 
+binding.SpinnerFamily.setOnItemClickListener((adapterView, view1, i, l) ->{
 
+    String memberCheck=familyMemberNames.get(i);
+    if(memberCheck.equalsIgnoreCase("NOT IN THE LIST"))
+    {
+        flag=1;
+     binding.memberOuterLay.setVisibility(View.VISIBLE);
+
+        binding.btnSave.setVisibility(View.VISIBLE);
+
+    }else {
+        flag=0;
+
+        selectedmemberCode=familyMemberNames.get(i);
+        binding.memberOuterLay.setVisibility(View.GONE);
+        binding.btnSave.setVisibility(View.VISIBLE);
+
+    }
+
+});
 
 
 
@@ -738,7 +797,8 @@ Toolbar toolbar_home;
                 selectedWIlling= "";
                 selectedReason= "";
 
-                selectedmemberCode= "";selectedmember= "";
+                selectedmemberCode= "";
+                selectedmember= "";
                 binding.spinnerMemberName.setText("");
                 binding.spinnerWilling.setText("");
                 binding.spinnerReason.setText("");
@@ -878,6 +938,17 @@ Toolbar toolbar_home;
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(flag==1) {
+                    selectedmemberCode = binding.memberNameET.getText().toString();
+                    AppUtils.getInstance().showLog("Edit text Member Name  "+selectedmember,HomeFragment.class);
+                    if (selectedmemberCode.equalsIgnoreCase("")) {
+                        DialogFactory.getInstance().showAlertDialog(getContext(),1,"Alert!","Member name can't be empty...","Ok",true);
+                        return;
+
+                    }
+
+                }
               /*  Toast.makeText(getContext(),selectedGp+selectedVillage+selectedBeneficiary+selectedWIlling
                         +selectedInShg+selectedBenAvailable+beneficiaryAccNo+beneficiaryId+selectedReason+
                         beneficiaryBankName+beneficiaryBranchname+beneficiaryMobileNo+ifscCode+
@@ -1600,6 +1671,7 @@ public  void SyncApi(String userid,String imei, String device, String location, 
 
                 String data=new Gson().toJson(syncRequest);
                 plainData=new JSONObject(data);
+                AppUtils.getInstance().showLog("Sync Data"+plainData, HomeFragment.class);
                 //encryptedObject.accumulate("data",cryptography.encrypt(new Gson().toJson(nrlmMasterRequest)));
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

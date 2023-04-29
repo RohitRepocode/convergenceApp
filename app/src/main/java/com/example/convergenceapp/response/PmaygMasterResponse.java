@@ -39,14 +39,8 @@ public class PmaygMasterResponse {
         public String reg_no;
         public String beneficiaryname;
         public String familydet_name;
-
-
-
         public String grampanchayatcode;
         public String statename;
-
-
-
         public String mobileno;
         public String scheme;
         public String flag_sync;

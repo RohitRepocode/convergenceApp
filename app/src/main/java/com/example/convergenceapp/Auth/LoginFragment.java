@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.service.autofill.UserData;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -362,8 +363,8 @@ AppDatabase appDatabase;
 
                         } catch (Exception e) {
                         //    progressDialog.dismiss();
-                            Log.d(TAG, "notifySuccess: "+e);
-                            //AppUtils.getInstance().showLog("DecryptEx" + e, LoginFragment.class);
+                           // Log.d(TAG, "notifySuccess: "+e);
+                            AppUtils.getInstance().showLog("DecryptEx" + e, LoginFragment.class);
                         }
                         callNrlmMasterAPI();
                     }

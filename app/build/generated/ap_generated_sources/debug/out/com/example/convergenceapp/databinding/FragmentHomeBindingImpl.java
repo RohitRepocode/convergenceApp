@@ -36,19 +36,23 @@ public class FragmentHomeBindingImpl extends FragmentHomeBinding  {
         sViewsWithIds.put(R.id.spinner_ben_avail, 20);
         sViewsWithIds.put(R.id.any_family_visib, 21);
         sViewsWithIds.put(R.id.spinner_in_shg, 22);
-        sViewsWithIds.put(R.id.ngp_visib, 23);
-        sViewsWithIds.put(R.id.spinner_nrlm_gp, 24);
-        sViewsWithIds.put(R.id.nrlm_vill_vissib, 25);
-        sViewsWithIds.put(R.id.spinner_nrlm_village, 26);
-        sViewsWithIds.put(R.id.shg_visi, 27);
-        sViewsWithIds.put(R.id.spinner_shg_name, 28);
-        sViewsWithIds.put(R.id.member_visi, 29);
-        sViewsWithIds.put(R.id.spinner_member_name, 30);
-        sViewsWithIds.put(R.id.willing_visib, 31);
-        sViewsWithIds.put(R.id.spinner_willing, 32);
-        sViewsWithIds.put(R.id.reason_visi, 33);
-        sViewsWithIds.put(R.id.spinner_reason, 34);
-        sViewsWithIds.put(R.id.btn_save, 35);
+        sViewsWithIds.put(R.id.lis_of_familyMember, 23);
+        sViewsWithIds.put(R.id.Spinner_family, 24);
+        sViewsWithIds.put(R.id.member_outerLay, 25);
+        sViewsWithIds.put(R.id.member_nameET, 26);
+        sViewsWithIds.put(R.id.ngp_visib, 27);
+        sViewsWithIds.put(R.id.spinner_nrlm_gp, 28);
+        sViewsWithIds.put(R.id.nrlm_vill_vissib, 29);
+        sViewsWithIds.put(R.id.spinner_nrlm_village, 30);
+        sViewsWithIds.put(R.id.shg_visi, 31);
+        sViewsWithIds.put(R.id.spinner_shg_name, 32);
+        sViewsWithIds.put(R.id.member_visi, 33);
+        sViewsWithIds.put(R.id.spinner_member_name, 34);
+        sViewsWithIds.put(R.id.willing_visib, 35);
+        sViewsWithIds.put(R.id.spinner_willing, 36);
+        sViewsWithIds.put(R.id.reason_visi, 37);
+        sViewsWithIds.put(R.id.spinner_reason, 38);
+        sViewsWithIds.put(R.id.btn_save, 39);
     }
     // views
     @NonNull
@@ -59,45 +63,49 @@ public class FragmentHomeBindingImpl extends FragmentHomeBinding  {
     // Inverse Binding Event Handlers
 
     public FragmentHomeBindingImpl(@Nullable androidx.databinding.DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 36, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 40, sIncludes, sViewsWithIds));
     }
     private FragmentHomeBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0
+            , (android.widget.AutoCompleteTextView) bindings[24]
             , (com.google.android.material.textfield.TextInputLayout) bindings[21]
             , (android.widget.ImageView) bindings[2]
             , (androidx.cardview.widget.CardView) bindings[14]
             , (com.google.android.material.textfield.TextInputLayout) bindings[19]
             , (com.google.android.material.textfield.TextInputLayout) bindings[8]
-            , (com.google.android.material.button.MaterialButton) bindings[35]
+            , (com.google.android.material.button.MaterialButton) bindings[39]
             , (android.widget.EditText) bindings[18]
             , (android.widget.TextView) bindings[11]
             , (android.widget.LinearLayout) bindings[10]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[23]
             , (android.widget.LinearLayout) bindings[16]
-            , (com.google.android.material.textfield.TextInputLayout) bindings[29]
+            , (com.google.android.material.textfield.TextInputEditText) bindings[26]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[25]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[33]
             , (android.widget.LinearLayout) bindings[17]
             , (android.widget.TextView) bindings[13]
             , (android.widget.LinearLayout) bindings[12]
-            , (com.google.android.material.textfield.TextInputLayout) bindings[23]
-            , (com.google.android.material.textfield.TextInputLayout) bindings[25]
-            , (android.widget.LinearLayout) bindings[15]
-            , (com.google.android.material.textfield.TextInputLayout) bindings[33]
             , (com.google.android.material.textfield.TextInputLayout) bindings[27]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[29]
+            , (android.widget.LinearLayout) bindings[15]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[37]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[31]
             , (android.widget.AutoCompleteTextView) bindings[20]
             , (android.widget.AutoCompleteTextView) bindings[9]
             , (android.widget.AutoCompleteTextView) bindings[5]
             , (android.widget.AutoCompleteTextView) bindings[22]
-            , (android.widget.AutoCompleteTextView) bindings[30]
-            , (android.widget.AutoCompleteTextView) bindings[24]
-            , (android.widget.AutoCompleteTextView) bindings[26]
             , (android.widget.AutoCompleteTextView) bindings[34]
-            , (android.widget.AutoCompleteTextView) bindings[4]
             , (android.widget.AutoCompleteTextView) bindings[28]
-            , (android.widget.AutoCompleteTextView) bindings[7]
+            , (android.widget.AutoCompleteTextView) bindings[30]
+            , (android.widget.AutoCompleteTextView) bindings[38]
+            , (android.widget.AutoCompleteTextView) bindings[4]
             , (android.widget.AutoCompleteTextView) bindings[32]
+            , (android.widget.AutoCompleteTextView) bindings[7]
+            , (android.widget.AutoCompleteTextView) bindings[36]
             , (android.widget.TextView) bindings[3]
             , (androidx.appcompat.widget.Toolbar) bindings[1]
             , (com.google.android.material.textfield.TextInputLayout) bindings[6]
-            , (com.google.android.material.textfield.TextInputLayout) bindings[31]
+            , (com.google.android.material.textfield.TextInputLayout) bindings[35]
             );
         this.mboundView0 = (android.widget.LinearLayout) bindings[0];
         this.mboundView0.setTag(null);

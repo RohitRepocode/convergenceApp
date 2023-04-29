@@ -398,6 +398,8 @@
                    android:visibility="gone"
                    app:boxStrokeColor="@color/out_line_strok">
 
+
+
                    <AutoCompleteTextView
                        android:id="@+id/spinner_in_shg"
                        android:layout_width="match_parent"
@@ -412,6 +414,63 @@
 
                </com.google.android.material.textfield.TextInputLayout>
 
+               <com.google.android.material.textfield.TextInputLayout
+                   android:id="@+id/lis_of_familyMember"
+                   style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="3dp"
+                   android:layout_marginTop="15dp"
+                   android:layout_marginRight="3dp"
+                   android:fontFamily="@font/montserrat_regular"
+                   android:hint="@string/list_of_famliy_member"
+                   android:padding="3dp"
+                   android:textColorHint="@color/black"
+                   android:visibility="gone"
+                   app:boxStrokeColor="@color/out_line_strok">
+
+
+
+                   <AutoCompleteTextView
+                       android:id="@+id/Spinner_family"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:focusable="false"
+                       android:focusableInTouchMode="false"
+                       android:fontFamily="@font/montserrat_regular"
+                       android:inputType="none"
+                       android:textColor="@color/black"
+                       android:textSize="15sp"
+                       tools:ignore="LabelFor" />
+
+               </com.google.android.material.textfield.TextInputLayout>
+
+
+               <com.google.android.material.textfield.TextInputLayout
+                   style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/member_outerLay"
+                   android:visibility="gone"
+                   android:layout_marginLeft="5dp"
+                   android:layout_marginRight="5dp"
+                   android:layout_marginTop="7dp"
+                   android:hint="@string/member_names"
+                   app:boxStrokeColor="@color/out_line_strok"
+
+                   >
+
+                   <com.google.android.material.textfield.TextInputEditText
+                       android:id="@+id/member_nameET"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                       android:fontFamily="@font/manrope_regular"
+                       android:textColor="@color/black"
+                       android:inputType="text"
+                       android:lines="1"
+                       android:maxLength="24" />
+               </com.google.android.material.textfield.TextInputLayout>
 
                <com.google.android.material.textfield.TextInputLayout
                    android:id="@+id/ngp_visib"
